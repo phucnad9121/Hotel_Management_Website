@@ -1,0 +1,125 @@
+:root {
+    --bg-dark: #0f172a;
+    --card-bg: #1e293b;
+    --ocean-blue: #0284c7;
+    --ocean-hover: #0369a1;
+    --text-white: #f1f5f9;
+    --input-bg: #334155;
+}
+
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-dark);
+}
+
+.login-container {
+    background: var(--card-bg);
+    width: 450px;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-header i {
+    font-size: 3rem;
+    color: var(--ocean-blue);
+    margin-bottom: 10px;
+}
+
+.login-header h1 {
+    color: var(--text-white);
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    color: var(--text-white);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.input-group label i {
+    color: var(--ocean-blue);
+    margin-right: 5px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    background: var(--input-bg);
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    transition: 0.3s;
+    outline: none;
+    box-sizing: border-box; /* Quan trọng để không bị tràn khung */
+}
+
+.form-control:focus {
+    border-color: var(--ocean-blue);
+    background: #1e293b;
+}
+
+/* Tùy chỉnh select option */
+select.form-control option {
+    background: var(--card-bg);
+    color: white;
+}
+
+.login-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-submit {
+    flex: 2;
+    padding: 12px;
+    background: var(--ocean-blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background: var(--ocean-hover);
+    transform: translateY(-2px);
+}
+
+.btn-back {
+    flex: 1;
+    padding: 12px;
+    background: #475569;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.login-note {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    margin-top: 25px;
+    font-style: italic;
+}

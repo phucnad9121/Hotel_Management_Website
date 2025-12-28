@@ -1,0 +1,102 @@
+:root {
+    --bg-dark: #0f172a;        /* Xám xanh đậm */
+    --card-bg: #1e293b;        /* Xám nhẹ hơn cho card */
+    --ocean-blue: #0284c7;     /* Xanh đại dương */
+    --ocean-hover: #0369a1;    /* Xanh đại dương đậm khi hover */
+    --text-main: #f1f5f9;
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg-dark);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.main-container {
+    display: flex;
+    width: 850px;
+    height: 500px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.left-image {
+    flex: 1.2;
+    /* Chỉ cần lùi 1 cấp bằng ../ để ra khỏi folder Css */
+    background: linear-gradient(to bottom, rgba(15, 23, 42, 0.2), var(--bg-dark)), 
+                url('../Picture/hotel.jpg') no-repeat center/cover;
+    display: flex;
+    align-items: flex-end;
+    padding: 30px;
+    color: white;
+}
+
+.right-content {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.icon-box i {
+    font-size: 3rem;
+    color: var(--ocean-blue);
+    margin-bottom: 10px;
+}
+
+.btn-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-primary {
+    background: var(--ocean-blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--ocean-hover);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    border: 2px solid var(--ocean-blue);
+    color: var(--ocean-blue);
+}
+
+.btn-outline:hover {
+    background: rgba(2, 132, 199, 0.1);
+}
+/* Chỉ căn giữa khi ở trang Auth (Login/Hello) */
+body.AuthController, body.Default {
+    margin: 0;
+    background-color: var(--bg-dark);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;             /* Bật lại flex */
+    justify-content: center;   /* Căn giữa ngang */
+    align-items: center;       /* Căn giữa dọc */
+    height: 100vh;
+    overflow: hidden;
+}

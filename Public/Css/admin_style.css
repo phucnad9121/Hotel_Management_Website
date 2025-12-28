@@ -1,0 +1,171 @@
+/* Reset lại body để giao diện tràn màn hình */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: block; /* Ghi đè lại display: flex của trang Hello */
+    background-color: #0f172a; /* Màu nền bg-dark */
+}
+.admin-wrapper {
+    display: flex;
+    width: 100%;      /* Đảm bảo rộng hết màn hình */
+    min-height: 100vh;
+    background-color: var(--bg-dark);
+}
+
+/* Sidebar giữ nguyên width cố định */
+.sidebar {
+    width: 280px;
+    min-width: 280px; /* Thêm dòng này để sidebar không bị co lại */
+    background-color: var(--sidebar-bg);
+    color: var(--text-white);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+}
+
+/* Main content sẽ tự động chiếm hết phần còn lại */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Cho phép cuộn nội dung bên phải */
+}
+
+/* Đảm bảo banner và card chiếm đủ chiều rộng */
+.welcome-banner, .info-card {
+    width: 100%;
+    box-sizing: border-box; /* Giúp padding không làm tràn khung */
+}
+:root {
+    --bg-dark: #0f172a;
+    --sidebar-bg: #1e293b;
+    --ocean-blue: #0284c7;
+    --ocean-hover: #0ea5e9;
+    --text-white: #f1f5f9;
+    --text-muted: #94a3b8;
+}
+
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--bg-dark);
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 280px;
+    background-color: var(--sidebar-bg);
+    color: var(--text-white);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+}
+
+.sidebar-header {
+    padding: 30px 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--ocean-blue);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-menu {
+    flex: 1;
+}
+
+.sidebar-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-menu ul li a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 25px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.sidebar-menu ul li a i {
+    width: 20px;
+}
+
+.sidebar-menu ul li:hover a, 
+.sidebar-menu ul li.active a {
+    color: var(--text-white);
+    background-color: rgba(2, 132, 199, 0.1);
+    border-left: 4px solid var(--ocean-blue);
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.btn-logout {
+    display: block;
+    padding: 12px;
+    text-align: center;
+    background: #e11d48;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+/* Main Content Styling */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-header {
+    height: 70px;
+    background: var(--sidebar-bg);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 40px;
+    color: var(--text-white);
+}
+
+.content-body {
+    padding: 40px;
+    color: var(--text-white);
+}
+
+.welcome-banner {
+    background: linear-gradient(135deg, var(--ocean-blue), var(--bg-dark));
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+.info-card {
+    background: var(--sidebar-bg);
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 5px solid var(--ocean-blue);
+}
+/* Chỉ áp dụng cho trang Admin */
+body.AdminController {
+    margin: 0;
+    padding: 0;
+    display: block;            /* Không dùng flex cho body */
+    background-color: var(--bg-dark);
+    height: 100vh;
+    overflow-x: hidden;        /* Chặn cuộn ngang */
+}
+
+.admin-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}

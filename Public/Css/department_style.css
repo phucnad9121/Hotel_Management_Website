@@ -1,0 +1,157 @@
+:root {
+    --card-bg: #1e293b;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --ocean-blue: #0284c7;
+    --text-white: #f1f5f9;
+}
+
+/* ===== Khung hiển thị bảng ===== */
+.table-container {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+    color: var(--text-white);
+}
+
+/* ===== Bảng ===== */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.admin-table th {
+    padding: 12px;
+    color: #38bdf8;
+    text-transform: uppercase;
+    font-size: 13px;
+    border-bottom: 2px solid var(--ocean-blue);
+    background: rgba(255,255,255,0.03);
+}
+
+.admin-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.admin-table tr:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+/* ===== Badge chức danh ===== */
+.badge {
+    background: rgba(2,132,199,0.15);
+    color: #38bdf8;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+    border: 1px solid rgba(56,189,248,0.35);
+}
+
+/* ===== Lương ===== */
+.salary-text {
+    color: #10b981;
+    font-weight: bold;
+}
+
+/* ===== Nút thao tác chỉnh sửa / xóa ===== */
+.action-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-icon {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    transition: 0.25s;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.btn-icon.edit{
+    background:#0284c7;
+    color:white;
+}
+.btn-icon.delete{
+    background:#dc2626;
+    color:white;
+}
+
+.btn-icon:hover{
+    transform: scale(1.08);
+    filter: brightness(1.15);
+}
+
+/* Form thêm/chỉnh sửa */
+.info-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    border:1px solid var(--border-color);
+    color: var(--text-white);
+}
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    color: var(--text-white);
+    border: 1px solid rgba(255,255,255,0.15); /* viền ngoài bảng */
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 12px 14px;
+    border-right: 1px solid rgba(255,255,255,0.15); /* đường ngăn cách cột */
+}
+
+/* bỏ viền cột cuối cho đẹp */
+.admin-table th:last-child,
+.admin-table td:last-child {
+    border-right: none;
+}
+
+/* đường kẻ hàng rõ hơn */
+.admin-table tr {
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.admin-table tr:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.btn-custom-white {
+    background-color: #ffffff;
+    color: #333;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.btn-custom-white:hover {
+    background-color: #f3f4f6;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    color: #000;
+}
+
+.btn-danger {
+    background-color: #ef4444;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
