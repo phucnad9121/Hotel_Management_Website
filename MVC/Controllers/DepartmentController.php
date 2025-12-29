@@ -12,7 +12,7 @@ class DepartmentController extends controller {
         ob_start();
         $this->view("Pages/Department", ["departments" => $departments]);
         $content = ob_get_clean();
-        $this->view("Master", ["content" => $content]);
+        $this->view("Master", ["content" => $content, "page_tab" => "department"]);
     }
 
     // Action xử lý Thêm/Sửa

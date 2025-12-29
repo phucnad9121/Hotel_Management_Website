@@ -6,7 +6,7 @@ class AdminController extends controller {
         ob_start();
         $this->view("Pages/Admin"); // Đây là file chứa cái sidebar và banner bạn gửi ở trên
         $content = ob_get_clean();
-        $this->view("Master", ["content" => $content]);
+        $this->view("Master", ["content" => $content, "page_tab" => "dashboard"]);
     }
 
     // 2. Trang Quản lý bộ phận (Giao diện có Form và Bảng)
@@ -25,7 +25,7 @@ class AdminController extends controller {
         $this->view("Pages/Department", ["departments" => $departments]); 
         $content = ob_get_clean();
 
-        $this->view("Master", ["content" => $content]);
+        $this->view("Master", ["content" => $content, "page_tab" => "department"]);
     }
 
 }

@@ -5,6 +5,7 @@
     --ocean-hover: #0369a1;
     --text-white: #f1f5f9;
     --input-bg: #334155;
+    --text-muted: #94a3b8; /* Tôi thêm biến này vì thấy bạn dùng trong HTML */
 }
 
 .login-wrapper {
@@ -15,14 +16,41 @@
     background-color: var(--bg-dark);
 }
 
+/* --- PHẦN SỬA ĐỔI: Layout chia đôi --- */
 .login-container {
     background: var(--card-bg);
-    width: 450px;
-    padding: 40px;
+    width: 900px;           /* Tăng độ rộng từ 450px lên 900px */
+    display: flex;          /* Kích hoạt Flexbox để chia cột */
+    padding: 0;             /* Xóa padding ở khung ngoài để ảnh tràn viền */
     border-radius: 20px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255,255,255,0.05);
+    overflow: hidden;       /* Để ảnh bo góc theo khung */
 }
+
+/* Cột Trái: Ảnh */
+.login-image {
+    flex: 1.2; /* Chiếm khoảng 55% diện tích */
+    background: linear-gradient(to bottom, rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.8)), 
+                url('../Picture/hotel.jpg') no-repeat center/cover;
+    display: flex;
+    align-items: flex-end;
+    padding: 40px;
+    color: white;
+}
+.image-overlay h2 { margin: 0; font-size: 2rem; text-shadow: 2px 2px 4px black; }
+.image-overlay p { margin: 5px 0 0; opacity: 0.9; }
+
+/* Cột Phải: Form (Chuyển padding 40px của bạn vào đây) */
+.login-right-side {
+    flex: 1; /* Chiếm phần còn lại */
+    padding: 40px; /* Padding cũ của .login-container chuyển vào đây */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* --- PHẦN DƯỚI ĐÂY GIỮ NGUYÊN 100% CODE CŨ CỦA BẠN --- */
 
 .login-header {
     text-align: center;
@@ -122,4 +150,11 @@ select.form-control option {
     font-size: 0.85rem;
     margin-top: 25px;
     font-style: italic;
+}
+
+/* Responsive: Trên điện thoại thì ẩn ảnh đi */
+@media (max-width: 768px) {
+    .login-container { width: 450px; flex-direction: column; }
+    .login-image { display: none; }
+    .login-right-side { padding: 30px; }
 }
