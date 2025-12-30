@@ -97,14 +97,19 @@
 
 <div class="guest-home">
     <header class="guest-header">
-        <div>
-            <h2 style="margin: 0;"><i class="fas fa-hotel"></i> Hotel Luxury</h2>
-            <p style="opacity: 0.9; margin: 5px 0 0 0;">Xin chào, <?= $data['guest']['HoKhachHang'] ?> <?= $data['guest']['TenKhachHang'] ?></p>
-        </div>
+    <div>
+        <h2 style="margin: 0;"><i class="fas fa-hotel"></i> Hotel Luxury</h2>
+        <p style="opacity: 0.9; margin: 5px 0 0 0;">Xin chào, <?= $data['guest']['HoKhachHang'] ?> <?= $data['guest']['TenKhachHang'] ?></p>
+    </div>
+    <div style="display: flex; gap: 15px;">
+        <a href="?controller=GuestController&action=myBookings" class="btn-custom-white">
+            <i class="fas fa-calendar-alt"></i> Booking của tôi
+        </a>
         <a href="?controller=AuthController&action=logout" class="btn-logout">
             <i class="fas fa-sign-out-alt"></i> Đăng xuất
         </a>
-    </header>
+    </div>
+</header>
 
     <section class="hero-section">
         <div class="hero-content">
