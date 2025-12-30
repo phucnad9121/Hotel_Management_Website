@@ -84,5 +84,10 @@ class BookingModel extends connectDB {
         }
         return null;
     }
+    public function checkBookingExist($maKhachHang) {
+        $sql = "SELECT COUNT(*) as total FROM bookings_booking WHERE MaKhachHang = '$maKhachHang'";
+        $result = $this->selectOne($sql);
+        return $result['total'] > 0;
+    }
 }
 ?>

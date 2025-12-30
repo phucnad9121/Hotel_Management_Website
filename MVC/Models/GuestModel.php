@@ -11,6 +11,31 @@ class GuestModel extends connectDB {
         return $this->execute($sql);
     }
     
+    public function update($id, $data) {
+        $sql = "UPDATE hotels_guests SET 
+                TenKhachHang = '{$data['TenKhachHang']}',
+                HoKhachHang = '{$data['HoKhachHang']}',
+                EmailKhachHang = '{$data['EmailKhachHang']}',
+                SoDienThoaiKhachHang = '{$data['SoDienThoaiKhachHang']}',
+                CMND_CCCDKhachHang = '{$data['CMND_CCCDKhachHang']}',
+                DiaChi = '{$data['DiaChi']}'
+                WHERE MaKhachHang = '$id'";
+        return $this->execute($sql);
+    }
+
+    // [MỚI] Xóa khách hàng
+    public function delete($id) {
+        $sql = "DELETE FROM hotels_guests WHERE MaKhachHang = '$id'";
+        return $this->execute($sql);
+    }
+    
+    // [MỚI] Kiểm tra trùng SĐT nhưng trừ chính mình ra (Dùng cho chức năng Sửa)
+    public function checkPhoneUpdate($phone, $currentId) {
+        $sql = "SELECT * FROM hotels_guests WHERE SoDienThoaiKhachHang = '$phone' AND MaKhachHang != '$currentId'";
+        $result = $this->select($sql);
+        return !empty($result);
+    }
+
     // Kiểm tra số điện thoại đã tồn tại
     public function checkPhoneExists($phone) {
         $sql = "SELECT * FROM hotels_guests WHERE SoDienThoaiKhachHang = '$phone'";
