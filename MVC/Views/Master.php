@@ -44,10 +44,15 @@
                             <a href="#"><i class="fas fa-user-shield"></i>Quản lý Tài khoản</a>
                         </li>
                         <li class="<?= $tab == 'roomtype' ? 'active' : '' ?>">
-                            <a href="#"><i class="fas fa-bed"></i>Quản lý Loại phòng</a>
+                            <a href="?controller=RoomTypeController&action=index"> 
+                                <i class="fas fa-bed"></i>Quản lý Loại phòng
+                            </a>
                         </li>
+
                         <li class="<?= $tab == 'room' ? 'active' : '' ?>">
-                            <a href="#"><i class="fas fa-door-open"></i>Quản lý Phòng</a>
+                            <a href="?controller=RoomController&action=index">
+                                <i class="fas fa-door-open"></i>Quản lý Phòng
+                            </a>
                         </li>
                         <li class="<?= $tab == 'service' ? 'active' : '' ?>">
                              <a href="?controller=ServiceController&action=index">
@@ -87,15 +92,28 @@
                 </header>
                 
                 <section class="content-body">
-                    <?php echo $data['content']; ?>
+                    <?php 
+                    // Kiểm tra: Nếu Controller gửi tên file (Page) thì require file đó
+                    if (isset($data['Page'])) {
+                        require_once "./MVC/Views/Pages/" . $data['Page'] . ".php";
+                    } 
+                    // Nếu Controller gửi nội dung trực tiếp (content) thì in ra
+                    else if (isset($data['content'])) {
+                        echo $data['content'];
+                    }
+                    ?>
                 </section>
             </main>
         </div>
 
     <?php 
     } else { 
-        // Trường hợp không phải Admin (Login, Register, Guest...) -> Chỉ in content ra
-        echo $data['content']; 
+        // Trường hợp không phải Admin
+        if (isset($data['Page'])) {
+            require_once "./MVC/Views/Pages/" . $data['Page'] . ".php";
+        } else if (isset($data['content'])) {
+            echo $data['content'];
+        }
     } 
     ?>
 
