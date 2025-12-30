@@ -103,9 +103,9 @@ class GuestController extends controller {
                 JOIN rooms_room r ON rb.MaPhong = r.MaPhong 
                 WHERE rb.MaDatPhong = b.MaDatPhong) as SoPhong
                 FROM bookings_booking b
-                WHERE b.MaKhachHang = {$_SESSION['guest_id']}
+                WHERE b.MaKhachHang = '{$_SESSION['guest_id']}'
                 ORDER BY b.NgayTao DESC";
-        $bookings = $db->select($sql);
+        $bookings = $bookingModel->getByGuestId($_SESSION['guest_id']);
         
         ob_start();
         $this->view("Pages/GuestMyBookings", ["bookings" => $bookings]);

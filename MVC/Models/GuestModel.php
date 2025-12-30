@@ -45,9 +45,10 @@ class GuestModel extends connectDB {
     
     // Lấy thông tin khách hàng theo ID
     public function getGuestById($id) {
+        $id = mysqli_real_escape_string($this->con, (string)$id);
         $sql = "SELECT MaKhachHang, TenKhachHang, HoKhachHang, EmailKhachHang, 
                 SoDienThoaiKhachHang, CMND_CCCDKhachHang, DiaChi, TrangThai, NgayTao 
-                FROM hotels_guests WHERE MaKhachHang = $id";
+                FROM hotels_guests WHERE MaKhachHang = '$id'";
         return $this->selectOne($sql);
     }
     
@@ -73,7 +74,9 @@ class GuestModel extends connectDB {
     
     // Cập nhật trạng thái khách hàng
     public function updateStatus($id, $status) {
-        $sql = "UPDATE hotels_guests SET TrangThai = '$status' WHERE MaKhachHang = $id";
+        $id = mysqli_real_escape_string($this->con, (string)$id);
+        $status = mysqli_real_escape_string($this->con, (string)$status);
+        $sql = "UPDATE hotels_guests SET TrangThai = '$status' WHERE MaKhachHang = '$id'";
         return $this->execute($sql);
     }
 }

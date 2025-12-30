@@ -88,7 +88,7 @@
                                 <td class="action-buttons">
                                     <?php if($row['TrangThai'] == 'Pending'): ?>
                                         <button class="btn-icon" style="background: #3498db;" 
-                                                onclick="confirmBooking(<?= $row['MaDatPhong'] ?>, '<?= $maLoaiPhong ?>')"
+                                                onclick='confirmBooking(<?= json_encode($row["MaDatPhong"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>, <?= json_encode($maLoaiPhong ?? "", JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>)'
                                                 title="Xác nhận & Gán phòng">
                                             <i class="fas fa-check"></i>
                                         </button>
@@ -105,7 +105,7 @@
                                     
                                     <?php if($row['TrangThai'] == 'Checkin' || $row['TrangThai'] == 'Confirmed'): ?>
                                         <button class="btn-icon" style="background: #e67e22;" 
-                                                onclick="addService(<?= $row['MaDatPhong'] ?>)"
+                                                onclick='addService(<?= json_encode($row["MaDatPhong"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>)'
                                                 title="Thêm dịch vụ">
                                             <i class="fas fa-concierge-bell"></i>
                                         </button>
@@ -121,7 +121,7 @@
                                     <?php endif; ?>
                                     
                                     <button class="btn-icon" style="background: #9b59b6;" 
-                                            onclick="viewDetails(<?= $row['MaDatPhong'] ?>)"
+                                            onclick='viewDetails(<?= json_encode($row["MaDatPhong"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>)'
                                             title="Xem chi tiết">
                                         <i class="fas fa-info-circle"></i>
                                     </button>

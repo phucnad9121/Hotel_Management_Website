@@ -99,7 +99,7 @@
     <header class="guest-header">
     <div>
         <h2 style="margin: 0;"><i class="fas fa-hotel"></i> Hotel Luxury</h2>
-        <p style="opacity: 0.9; margin: 5px 0 0 0;">Xin chào, <?= $data['guest']['HoKhachHang'] ?> <?= $data['guest']['TenKhachHang'] ?></p>
+        <p style="opacity: 0.9; margin: 5px 0 0 0;">Xin chào, <?= (trim(($data['guest']['HoKhachHang'] ?? '') . ' ' . ($data['guest']['TenKhachHang'] ?? '')) ?: 'Khách hàng') ?></p>
     </div>
     <div style="display: flex; gap: 15px;">
         <a href="?controller=GuestController&action=myBookings" class="btn-custom-white">

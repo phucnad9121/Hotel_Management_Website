@@ -203,7 +203,7 @@
                                 <?= number_format($price) ?> đ
                             </td>
                             <td style="padding: 10px 5px; text-align: center;">
-                                <button onclick="removeService(<?= $idToDelete ?>)" 
+                                <button onclick='removeService(<?= json_encode($idToDelete, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>)' 
                                         style="background: none; border: none; color: #e74c3c; cursor: pointer;">
                                     <i class="fas fa-times-circle"></i>
                                 </button>
@@ -227,7 +227,7 @@
 
 <script>
 const selectedServices = new Map();
-const bookingId = <?= isset($data['booking']['MaDatPhong']) ? $data['booking']['MaDatPhong'] : 0 ?>;
+const bookingId = <?= json_encode($data['booking']['MaDatPhong'] ?? '') ?>;
 
 function toggleService(card) {
     const id = card.dataset.id;
@@ -296,7 +296,7 @@ function filterServices() {
 }
 
 async function confirmOrder() {
-    if (bookingId === 0) {
+    if (!bookingId) {
         alert('Lỗi: Không tìm thấy mã đặt phòng!');
         return;
     }

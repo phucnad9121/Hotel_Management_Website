@@ -180,7 +180,7 @@
 
 <script>
 const selectedServices = new Map();
-const bookingId = <?= $data['booking']['MaDatPhong'] ?>;
+const bookingId = <?= json_encode($data['booking']['MaDatPhong'] ?? '') ?>;
 
 function toggleService(card) {
     const id = card.dataset.id;

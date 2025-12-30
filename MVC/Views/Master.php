@@ -41,7 +41,7 @@
                             <i class="fas fa-users"></i>Quản lý Nhân viên</a>
                         </li>
                         <li class="<?= $tab == 'account' ? 'active' : '' ?>">
-                            <a href="#"><i class="fas fa-user-shield"></i>Quản lý Tài khoản</a>
+                            <a href="?controller=AccountController&action=index"><i class="fas fa-user-shield"></i>Quản lý Tài khoản</a>
                         </li>
                         <li class="<?= $tab == 'roomtype' ? 'active' : '' ?>">
                             <a href="?controller=RoomTypeController&action=index"> 
@@ -59,7 +59,7 @@
                         <i class="fas fa-concierge-bell"></i>Quản lý Dịch vụ</a>
                         </li>
                         <li class="<?= $tab == 'discount' ? 'active' : '' ?>">
-                            <a href="#"><i class="fas fa-tags"></i>Quản lý Giảm giá</a>
+                            <a href="?controller=DiscountController&action=index"><i class="fas fa-tags"></i>Quản lý Giảm giá</a>
                         </li>
                         <li class="<?= $tab == 'guest' ? 'active' : '' ?>">
                             <a href="?controller=GuestController&action=index"><i class="fas fa-address-book"></i>Quản lý Khách hàng</a>
@@ -68,7 +68,7 @@
                             <a href="?controller=BookingController&action=index"><i class="fas fa-calendar-check"></i>Quản lý Đặt phòng</a>
                         </li>     
                         <li class="<?= $tab == 'payment' ? 'active' : '' ?>">
-                            <a href="#"><i class="fas fa-credit-card"></i>Thanh toán & Trả phòng</a>
+                            <a href="?controller=PaymentController&action=index"><i class="fas fa-credit-card"></i>Thanh toán & Trả phòng</a>
                         </li>
                         <li class="<?= $tab == 'report' ? 'active' : '' ?>">
                             <a href="?controller=ReportController&action=index">

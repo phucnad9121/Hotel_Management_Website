@@ -165,7 +165,7 @@
                                 </span>
                             </td>
                             <td class="action-buttons">
-                                <button class="btn-icon" style="background: #9b59b6;" onclick="viewBookingDetail(<?= $row['MaDatPhong'] ?>)">
+                                <button class="btn-icon" style="background: #9b59b6;" onclick='viewBookingDetail(<?= json_encode($row["MaDatPhong"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>)'>
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </td>

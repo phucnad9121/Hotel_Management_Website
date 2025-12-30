@@ -167,8 +167,13 @@ class ServiceController extends controller {
             }
             
             $model = $this->model("ServiceModel");
-            $maDatPhong = intval($_POST['ma_dat_phong']);
-            $maDichVu = ($_POST['ma_dich_vu']);
+            $maDatPhong = trim((string)($_POST['ma_dat_phong'] ?? ''));
+            $maDichVu = trim((string)($_POST['ma_dich_vu'] ?? ''));
+
+            if ($maDatPhong === '' || $maDichVu === '') {
+                echo json_encode(['success' => false, 'message' => 'Thiếu thông tin']);
+                exit();
+            }
             
             // [FIX] Sử dụng hàm trong Model thay vì hàm private gây lỗi kết nối
             if ($model->checkServiceUsedExists($maDatPhong, $maDichVu)) {
