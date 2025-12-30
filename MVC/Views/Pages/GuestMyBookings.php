@@ -139,9 +139,6 @@
                         </button>
                     <?php endif; ?>
                     
-                    <button class="btn-custom-white" onclick="alert('Chức năng xem chi tiết đang phát triển!')">
-                        <i class="fas fa-info-circle"></i> Chi tiết
-                    </button>
                 </div>
             </div>
             <?php endforeach; ?>
