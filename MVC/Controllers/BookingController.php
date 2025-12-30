@@ -174,17 +174,20 @@ class BookingController extends controller {
         }
     }
     
-    // API lấy danh sách phòng trống (dùng cho AJAX)
+    // API lấy danh sách phòng trống (ĐÃ SỬA ĐỂ GỌI ĐÚNG BOOKING MODEL)
     public function getAvailableRooms() {
         header('Content-Type: application/json');
         
-        if (isset($_GET['type'])) {
-            $roomModel = $this->model("RoomModel");
-            $rooms = $roomModel->getAvailableByType($_GET['type']);
-            echo json_encode($rooms);
-        } else {
-            echo json_encode([]);
-        }
+        // Gọi BookingModel vì ta vừa viết hàm getAvailableRooms ở đó
+        $bookingModel = $this->model("BookingModel");
+        
+        // Lấy type từ URL, nếu không có thì để rỗng (để lấy tất cả)
+        $type = isset($_GET['type']) ? $_GET['type'] : '';
+
+        // Gọi hàm getAvailableRooms trong BookingModel
+        $rooms = $bookingModel->getAvailableRooms($type);
+        
+        echo json_encode($rooms);
         exit();
     }
 }

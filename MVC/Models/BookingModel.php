@@ -1,9 +1,8 @@
 <?php
 class BookingModel extends connectDB {
     
-    // 1. Tạo booking mới
+   // 1. Tạo booking mới (GIỮ NGUYÊN)
     public function createBooking($data) {
-        // Lưu ý: MaKhachHang là số (INT) nên không cần dấu nháy đơn ''
         $sql = "INSERT INTO bookings_booking 
                 (NgayDatPhong, ThoiGianLuuTru, NgayNhanPhong, NgayTraPhong, 
                 SoTienDatPhong, MaKhachHang, GhiChu) 
@@ -13,10 +12,8 @@ class BookingModel extends connectDB {
         return $this->execute($sql);
     }
     
-    // 2. Lấy tất cả booking (SỬA LẠI ĐỂ KHỚP VIEW)
-    // TÌM HÀM getAll() CŨ VÀ XÓA ĐI, THAY BẰNG ĐOẠN NÀY:
+    // 2. Lấy tất cả booking (GIỮ NGUYÊN)
     public function getAll() {
-        // Sửa lỗi: Tách riêng HoKhachHang và TenKhachHang thay vì dùng CONCAT
         $sql = "SELECT b.*, 
                 g.HoKhachHang, 
                 g.TenKhachHang,
@@ -29,13 +26,13 @@ class BookingModel extends connectDB {
         return $this->select($sql);
     }
     
-    // 3. Lấy booking theo ID
+    // 3. Lấy booking theo ID (GIỮ NGUYÊN)
     public function getById($id) {
         $sql = "SELECT * FROM bookings_booking WHERE MaDatPhong = $id";
         return $this->selectOne($sql);
     }
     
-    // 4. Tìm kiếm booking (SỬA LẠI ĐỂ KHỚP VIEW)
+    // 4. Tìm kiếm booking (GIỮ NGUYÊN)
     public function search($keyword) {
         $sql = "SELECT b.*, 
                 g.HoKhachHang, 
@@ -51,22 +48,20 @@ class BookingModel extends connectDB {
         return $this->select($sql);
     }
     
-    // 5. Cập nhật trạng thái booking
+    // 5. Cập nhật trạng thái booking (GIỮ NGUYÊN)
     public function updateStatus($id, $status) {
-        // Trong SQL TrangThai là ENUM, giá trị phải khớp chính xác (Pending, Confirmed...)
         $sql = "UPDATE bookings_booking SET TrangThai = '$status' WHERE MaDatPhong = $id";
         return $this->execute($sql);
     }
     
-    // 6. Gán phòng cho booking
+    // 6. Gán phòng cho booking (GIỮ NGUYÊN)
     public function assignRoom($maDatPhong, $maPhong) {
-        // Bảng rooms_roombooked của bạn có cột MaPhongDaDat tự tăng, không cần insert
         $sql = "INSERT INTO rooms_roombooked (MaDatPhong, MaPhong) 
                 VALUES ($maDatPhong, '$maPhong')";
         return $this->execute($sql);
     }
     
-    // 7. Lấy danh sách phòng đã gán
+    // 7. Lấy danh sách phòng đã gán (GIỮ NGUYÊN)
     public function getAssignedRooms($maDatPhong) {
         $sql = "SELECT rb.*, r.SoPhong 
                 FROM rooms_roombooked rb
@@ -75,7 +70,7 @@ class BookingModel extends connectDB {
         return $this->select($sql);
     }
     
-    // 8. Hàm phụ trợ tách chuỗi loại phòng
+    // 8. Hàm phụ trợ tách chuỗi loại phòng (GIỮ NGUYÊN)
     public function parseRoomType($ghiChu) {
         if (strpos($ghiChu, 'ROOMTYPE:') === 0) {
             $parts = explode('|', $ghiChu, 2);
@@ -84,10 +79,36 @@ class BookingModel extends connectDB {
         }
         return null;
     }
+
+    // 9. Kiểm tra booking tồn tại (GIỮ NGUYÊN)
     public function checkBookingExist($maKhachHang) {
         $sql = "SELECT COUNT(*) as total FROM bookings_booking WHERE MaKhachHang = '$maKhachHang'";
         $result = $this->selectOne($sql);
         return $result['total'] > 0;
+    }
+
+    // 10. [MỚI - QUAN TRỌNG] Lấy danh sách phòng trống để gán
+    public function getAvailableRooms($type) {
+        // Lấy tất cả phòng đang Khả dụng
+        $sql = "SELECT r.* FROM rooms_room r WHERE r.KhaDung = 'Yes'";
+
+        // Nếu có lọc theo loại phòng thì thêm điều kiện
+        if (!empty($type)) {
+            $type = mysqli_real_escape_string($this->con, $type);
+            $sql .= " AND r.MaLoaiPhong = '$type'";
+        }
+
+        // CHỈ LOẠI BỎ những phòng đang có khách ở (Confirmed hoặc Checkin)
+        // Các phòng Checkout/Cancelled/Pending vẫn hiện ra để gán lại được
+        $sql .= " AND r.MaPhong NOT IN (
+                    SELECT rb.MaPhong 
+                    FROM rooms_roombooked rb
+                    JOIN bookings_booking bb ON rb.MaDatPhong = bb.MaDatPhong
+                    WHERE bb.TrangThai IN ('Confirmed', 'Checkin')
+                  )";
+
+        $sql .= " ORDER BY r.SoPhong ASC";
+        return $this->select($sql);
     }
 }
 ?>
