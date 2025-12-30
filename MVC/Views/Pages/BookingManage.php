@@ -1,10 +1,6 @@
 
     <main class="main-content">
-        <header class="top-header">
-            <div class="user-info">
-                Chào mừng: <strong>Quản trị viên</strong>
-            </div>
-        </header>
+        
         
         <section class="content-body">
             <div class="toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">

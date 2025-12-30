@@ -5,7 +5,7 @@
     --ocean-hover: #0369a1;
     --text-white: #f1f5f9;
     --input-bg: #334155;
-    --text-muted: #94a3b8; /* Tôi thêm biến này vì thấy bạn dùng trong HTML */
+    --text-muted: #94a3b8;
 }
 
 .login-wrapper {
@@ -14,70 +14,73 @@
     align-items: center;
     min-height: 100vh;
     background-color: var(--bg-dark);
+    padding: 20px;
 }
 
-/* --- PHẦN SỬA ĐỔI: Layout chia đôi --- */
+/* --- PHẦN CHỈNH SỬA: Thu nhỏ khung --- */
 .login-container {
     background: var(--card-bg);
-    width: 900px;           /* Tăng độ rộng từ 450px lên 900px */
-    display: flex;          /* Kích hoạt Flexbox để chia cột */
-    padding: 0;             /* Xóa padding ở khung ngoài để ảnh tràn viền */
+    width: 800px;           /* Giảm từ 900px xuống 800px cho gọn */
+    max-width: 95%;         /* Đảm bảo không bị tràn trên màn hình nhỏ */
+    display: flex;
     border-radius: 20px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255,255,255,0.05);
-    overflow: hidden;       /* Để ảnh bo góc theo khung */
+    overflow: hidden;
 }
 
 /* Cột Trái: Ảnh */
 .login-image {
-    flex: 1.2; /* Chiếm khoảng 55% diện tích */
+    flex: 1; /* Giảm tỷ lệ ảnh một chút (từ 1.2 xuống 1) để cân đối */
     background: linear-gradient(to bottom, rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.8)), 
                 url('../Picture/hotel.jpg') no-repeat center/cover;
     display: flex;
     align-items: flex-end;
-    padding: 40px;
+    padding: 30px; /* Giảm padding ảnh */
     color: white;
 }
-.image-overlay h2 { margin: 0; font-size: 2rem; text-shadow: 2px 2px 4px black; }
-.image-overlay p { margin: 5px 0 0; opacity: 0.9; }
+.image-overlay h2 { margin: 0; font-size: 1.8rem; text-shadow: 2px 2px 4px black; }
+.image-overlay p { margin: 5px 0 0; opacity: 0.9; font-size: 0.95rem; }
 
-/* Cột Phải: Form (Chuyển padding 40px của bạn vào đây) */
+/* Cột Phải: Form */
 .login-right-side {
-    flex: 1; /* Chiếm phần còn lại */
-    padding: 40px; /* Padding cũ của .login-container chuyển vào đây */
+    flex: 1.1; /* Tăng tỷ lệ phần form lên chút để chứa input */
+    padding: 30px; /* Giảm padding từ 40px xuống 30px cho đỡ choán chỗ */
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-/* --- PHẦN DƯỚI ĐÂY GIỮ NGUYÊN 100% CODE CŨ CỦA BẠN --- */
+/* --- PHẦN DƯỚI ĐÂY GIỮ NGUYÊN (Chỉ chỉnh margin nhỏ lại cho gọn) --- */
 
 .login-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px; /* Giảm margin tiêu đề */
 }
 
 .login-header i {
-    font-size: 3rem;
+    font-size: 2.5rem; /* Icon nhỏ lại chút */
     color: var(--ocean-blue);
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .login-header h1 {
     color: var(--text-white);
-    font-size: 1.5rem;
-    letter-spacing: 2px;
+    font-size: 1.3rem; /* Font chữ tiêu đề nhỏ lại chút */
+    letter-spacing: 1px;
+    margin: 0;
 }
 
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 12px; /* QUAN TRỌNG: Giảm khoảng cách input từ 20px xuống 12px để form ngắn lại */
 }
 
 .input-group label {
     display: block;
     color: var(--text-white);
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .input-group label i {
@@ -87,15 +90,15 @@
 
 .form-control {
     width: 100%;
-    padding: 12px 15px;
+    padding: 10px 12px; /* Giảm padding trong ô input */
     background: var(--input-bg);
     border: 1px solid transparent;
-    border-radius: 10px;
+    border-radius: 8px;
     color: white;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: 0.3s;
     outline: none;
-    box-sizing: border-box; /* Quan trọng để không bị tràn khung */
+    box-sizing: border-box;
 }
 
 .form-control:focus {
@@ -103,7 +106,6 @@
     background: #1e293b;
 }
 
-/* Tùy chỉnh select option */
 select.form-control option {
     background: var(--card-bg);
     color: white;
@@ -111,20 +113,21 @@ select.form-control option {
 
 .login-actions {
     display: flex;
-    gap: 15px;
-    margin-top: 30px;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .btn-submit {
     flex: 2;
-    padding: 12px;
+    padding: 10px; /* Nút bấm gọn hơn */
     background: var(--ocean-blue);
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
+    font-size: 0.95rem;
 }
 
 .btn-submit:hover {
@@ -134,12 +137,12 @@ select.form-control option {
 
 .btn-back {
     flex: 1;
-    padding: 12px;
+    padding: 10px;
     background: #475569;
     color: white;
     text-align: center;
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: 0.9rem;
     transition: 0.3s;
 }
@@ -147,14 +150,14 @@ select.form-control option {
 .login-note {
     text-align: center;
     color: #94a3b8;
-    font-size: 0.85rem;
-    margin-top: 25px;
+    font-size: 0.8rem;
+    margin-top: 15px;
     font-style: italic;
 }
 
-/* Responsive: Trên điện thoại thì ẩn ảnh đi */
+/* Responsive */
 @media (max-width: 768px) {
     .login-container { width: 450px; flex-direction: column; }
     .login-image { display: none; }
-    .login-right-side { padding: 30px; }
+    .login-right-side { padding: 25px; }
 }

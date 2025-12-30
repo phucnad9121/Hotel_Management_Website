@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./Public/Css/login_style.css">
     <link rel="stylesheet" href="./Public/Css/admin_style.css"> 
     <link rel="stylesheet" href="./Public/Css/department_style.css">
+    <link rel="stylesheet" href="./Public/Css/employee_style.css">
 </head>
 <body class="<?php echo isset($_GET['controller']) ? $_GET['controller'] : 'Default'; ?>">
 
@@ -31,12 +32,13 @@
                            </a>
                         </li>
                         <li class="<?= $tab == 'department' ? 'active' : '' ?>">
-                           <a href="?controller=AdminController&action=department">
+                           <a href="?controller=DepartmentController&action=index">
                            <i class="fas fa-th-large"></i>Quản lý Bộ phận
                            </a>
                         </li>
-                        <li class="<?= $tab == 'staff' ? 'active' : '' ?>">
-                            <a href="#"><i class="fas fa-users"></i>Quản lý Nhân viên</a>
+                        <li class="<?= $tab == 'employee' ? 'active' : '' ?>">
+                            <a href="?controller=EmployeeController&action=index">
+                            <i class="fas fa-users"></i>Quản lý Nhân viên</a>
                         </li>
                         <li class="<?= $tab == 'account' ? 'active' : '' ?>">
                             <a href="#"><i class="fas fa-user-shield"></i>Quản lý Tài khoản</a>
@@ -53,7 +55,8 @@
                             </a>
                         </li>
                         <li class="<?= $tab == 'service' ? 'active' : '' ?>">
-                            <a href="#"><i class="fas fa-concierge-bell"></i>Quản lý Dịch vụ</a>
+                             <a href="?controller=ServiceController&action=index">
+                        <i class="fas fa-concierge-bell"></i>Quản lý Dịch vụ</a>
                         </li>
                         <li class="<?= $tab == 'discount' ? 'active' : '' ?>">
                             <a href="#"><i class="fas fa-tags"></i>Quản lý Giảm giá</a>
@@ -68,8 +71,9 @@
                             <a href="#"><i class="fas fa-credit-card"></i>Thanh toán & Trả phòng</a>
                         </li>
                         <li class="<?= $tab == 'report' ? 'active' : '' ?>">
-                            <a href="#"><i class="fas fa-chart-line"></i>Báo cáo & Thống kê</a>
-                        </li>
+                            <a href="?controller=ReportController&action=index">
+                            <i class="fas fa-chart-line"></i>Báo cáo & Thống kê</a>
+                        </li>                        
                     </ul>
                 </nav>
         
