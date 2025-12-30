@@ -48,7 +48,8 @@
                             <a href="#"><i class="fas fa-door-open"></i>Quản lý Phòng</a>
                         </li>
                         <li class="<?= $tab == 'service' ? 'active' : '' ?>">
-                            <a href="#"><i class="fas fa-concierge-bell"></i>Quản lý Dịch vụ</a>
+                             <a href="?controller=ServiceController&action=index">
+                        <i class="fas fa-concierge-bell"></i>Quản lý Dịch vụ</a>
                         </li>
                         <li class="<?= $tab == 'discount' ? 'active' : '' ?>">
                             <a href="#"><i class="fas fa-tags"></i>Quản lý Giảm giá</a>
@@ -63,8 +64,9 @@
                             <a href="#"><i class="fas fa-credit-card"></i>Thanh toán & Trả phòng</a>
                         </li>
                         <li class="<?= $tab == 'report' ? 'active' : '' ?>">
-                            <a href="#"><i class="fas fa-chart-line"></i>Báo cáo & Thống kê</a>
-                        </li>
+                            <a href="?controller=ReportController&action=index">
+                            <i class="fas fa-chart-line"></i>Báo cáo & Thống kê</a>
+                        </li>                        
                     </ul>
                 </nav>
         
