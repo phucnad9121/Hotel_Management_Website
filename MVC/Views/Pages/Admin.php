@@ -1,6 +1,4 @@
-    <main class="main-content">
-        
-        
+<main class="main-content">
         <section class="content-body">
             <div class="welcome-banner">
                 <h2>Hệ thống Quản trị Hotel Luxury</h2>

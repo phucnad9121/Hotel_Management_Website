@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./Public/Css/login_style.css">
     <link rel="stylesheet" href="./Public/Css/admin_style.css"> 
     <link rel="stylesheet" href="./Public/Css/department_style.css">
+    <link rel="stylesheet" href="./Public/Css/employee_style.css">
 </head>
 <body class="<?php echo isset($_GET['controller']) ? $_GET['controller'] : 'Default'; ?>">
 
@@ -31,12 +32,13 @@
                            </a>
                         </li>
                         <li class="<?= $tab == 'department' ? 'active' : '' ?>">
-                           <a href="?controller=AdminController&action=department">
+                           <a href="?controller=DepartmentController&action=index">
                            <i class="fas fa-th-large"></i>Quản lý Bộ phận
                            </a>
                         </li>
-                        <li class="<?= $tab == 'staff' ? 'active' : '' ?>">
-                            <a href="#"><i class="fas fa-users"></i>Quản lý Nhân viên</a>
+                        <li class="<?= $tab == 'employee' ? 'active' : '' ?>">
+                            <a href="?controller=EmployeeController&action=index">
+                            <i class="fas fa-users"></i>Quản lý Nhân viên</a>
                         </li>
                         <li class="<?= $tab == 'account' ? 'active' : '' ?>">
                             <a href="#"><i class="fas fa-user-shield"></i>Quản lý Tài khoản</a>
