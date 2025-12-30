@@ -62,9 +62,9 @@
                 </div>
                 <div class="service-item-price">
                     <div class="price"><?= number_format($service['ChiPhiDichVu']) ?> đ</div>
-                    <div class="time">
+                     <div class="time">
                         <i class="fas fa-clock"></i>
-                        <?= date('d/m/Y H:i', strtotime($service['NgayGioSuDung'])) ?>
+                        <?= date('d/m/Y H:i', strtotime($service['NgaySuDung'])) ?>
                     </div>
                 </div>
             </div>

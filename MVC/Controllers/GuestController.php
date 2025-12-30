@@ -154,6 +154,8 @@ class GuestController extends controller {
         $this->view("Master", ["content" => $content]);
     }
 
+    
+
     // Xem dịch vụ đã đặt
     public function viewMyServices() {
         session_start();

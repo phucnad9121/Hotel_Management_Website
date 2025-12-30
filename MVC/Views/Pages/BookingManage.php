@@ -205,7 +205,8 @@ function closeModal() {
 }
 
 function addService(maDatPhong) {
-    alert('Chức năng thêm dịch vụ đang được phát triển!\nMã đặt phòng: ' + maDatPhong);
+    // Chuyển hướng sang action mới mà ta sẽ tạo ở Bước 2
+    window.location.href = `?controller=BookingController&action=addServiceAdmin&booking_id=${maDatPhong}`;
 }
 
 function viewDetails(maDatPhong) {

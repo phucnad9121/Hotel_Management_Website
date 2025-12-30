@@ -121,6 +121,36 @@ class BookingController extends controller {
             }
         }
     }
+
+    public function addServiceAdmin() {
+        if (!isset($_GET['booking_id'])) {
+            echo "<script>alert('Không tìm thấy booking!'); window.history.back();</script>";
+            return;
+        }
+
+        $bookingModel = $this->model("BookingModel");
+        $serviceModel = $this->model("ServiceModel");
+        $guestModel = $this->model("GuestModel");
+
+        $maDatPhong = $_GET['booking_id'];
+        $booking = $bookingModel->getById($maDatPhong);
+        
+        // Lấy thông tin khách hàng gắn liền với booking đó
+        $guest = $guestModel->getGuestById($booking['MaKhachHang']);
+        $services = $serviceModel->getAll();
+        
+        $usedServices = $serviceModel->getServicesByBooking($maDatPhong);
+
+        ob_start();
+        // Chúng ta sẽ tạo một View mới tên là BookingAddService.php (copy từ GuestServiceOrder)
+        $this->view("Pages/BookingAddService", [
+            "booking" => array_merge($booking, $guest),
+            "services" => $services,
+            "usedServices" => $usedServices
+        ]);
+        $content = ob_get_clean();
+        $this->view("Master", ["content" => $content, "page_tab" => "booking"]);
+    }
     
     // Hủy đặt phòng
     public function cancel() {
