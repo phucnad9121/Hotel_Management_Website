@@ -1,12 +1,4 @@
-
-
-    <main class="main-content">
-        <header class="top-header">
-            <div class="user-info">
-                Chào mừng: <strong>Quản trị viên</strong>
-            </div>
-        </header>
-        
+<main class="main-content">
         <section class="content-body">
             <div class="welcome-banner">
                 <h2>Hệ thống Quản trị Hotel Luxury</h2>

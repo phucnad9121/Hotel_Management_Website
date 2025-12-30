@@ -1,0 +1,247 @@
+/* ========== THEME COLOR ========== */
+:root {
+    --bg-dark: #0f172a;
+    --card-bg: #1e293b;
+    --border-color: rgba(255,255,255,0.1);
+    --ocean-blue: #0284c7;
+    --text-white: #f1f5f9;
+    --text-light: #cbd5e1;
+}
+
+/* ========== CONTENT CONTAINER ========== */
+body {
+    background: var(--bg-dark);
+    color: var(--text-white);
+    font-family: "Roboto", sans-serif;
+}
+
+/* ========== NAV TOOLBAR ========== */
+.toolbar {
+    background: var(--card-bg);
+    padding: 15px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border:1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+/* SEARCH INPUT */
+.toolbar input[type=text]{
+    background:#0f172a;
+    color:white;
+    border:1px solid var(--border-color);
+    border-radius:6px;
+    padding:10px 12px;
+}
+.toolbar input::placeholder{ color:#94a3b8; }
+
+/* BUTTON STYLE */
+.btn-ocean{
+    background:var(--ocean-blue);
+    border:none;
+    color:white;
+    padding:9px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    transition:0.25s;
+}
+.btn-ocean:hover{ filter:brightness(1.15); transform:scale(.97); }
+
+.btn-outline{
+    background:transparent;
+    border:1px solid var(--ocean-blue);
+    color:var(--ocean-blue);
+    padding:9px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    transition:.3s;
+}
+.btn-outline:hover{ background:var(--ocean-blue); color:white; }
+
+/* ================= Employee Table Style ================ */
+
+/* Bo góc bảng + thêm viền, hỗ trợ chia cột */
+.employee-table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    font-size: 15px;
+    min-width: 1300px;
+
+    border:1px solid var(--border-color);
+    border-radius:12px;
+    overflow:hidden;
+}
+
+/* Header */
+.employee-table th {
+    padding: 12px 14px;
+    color: #38bdf8;
+    text-transform: uppercase;
+    font-size: 13px;
+    border-bottom: 2px solid var(--ocean-blue);
+    background: rgba(255,255,255,0.05);
+    letter-spacing: 0.5px;
+}
+
+/* Cell */
+.employee-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    white-space: nowrap;
+}
+
+/* Đường line chia cột */
+.employee-table th,
+.employee-table td {
+    border-right:1px solid rgba(255,255,255,0.08);
+}
+
+/* ẩn line cuối cùng cho đẹp */
+.employee-table th:last-child,
+.employee-table td:last-child {
+    border-right:none;
+}
+
+/* Hover Row */
+.employee-table tr:hover {
+    background: rgba(255,255,255,0.07);
+    transition: .2s;
+}
+
+/* --------- Tối ưu chiều rộng từng cột ---------- */
+.employee-table th:nth-child(1),
+.employee-table td:nth-child(1){ width: 80px; }
+
+.employee-table th:nth-child(2),
+.employee-table td:nth-child(2){ min-width: 160px;}
+
+.employee-table th:nth-child(3),
+.employee-table td:nth-child(3){ min-width: 180px;}
+
+.employee-table th:nth-child(4),
+.employee-table td:nth-child(4){ min-width: 120px;}
+
+.employee-table th:nth-child(5),
+.employee-table td:nth-child(5){ min-width: 120px;}
+
+.employee-table th:nth-child(6),
+.employee-table td:nth-child(6){ min-width: 70px;}
+
+.employee-table th:nth-child(7),
+.employee-table td:nth-child(7){ min-width: 100px;}
+
+.employee-table th:nth-child(8),
+.employee-table td:nth-child(8){ min-width: 100px;}
+
+.employee-table th:nth-child(9),
+.employee-table td:nth-child(9){ min-width: 100px;}
+
+.employee-table td:nth-child(10){
+    display:flex;
+    justify-content:center;
+    gap:8px;
+}
+
+/* Badge giống Department */
+.badge {
+    background: rgba(2,132,199,0.15);
+    color: #38bdf8;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+    border: 1px solid rgba(56,189,248,0.35);
+}
+
+/* Styling button icon */
+.btn-icon{
+    border:none;
+    padding:8px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.btn-icon.edit{ background:#0ea5e9; }
+.btn-icon.delete{ background:#ef4444; }
+
+.btn-icon i{ color:white; font-size:14px; }
+
+/* ACTION BUTTONS */
+.table a{
+    color:#38bdf8;
+    font-weight:600;
+    text-decoration:none;
+}
+.table a:hover{ text-decoration:underline; }
+
+/* ========== FORM EMPLOYEE ========== */
+#employeeForm{
+    background:var(--card-bg);
+    padding:25px;
+    border-radius:12px;
+    border:1px solid var(--border-color);
+    animation:fade .3s ease;
+    color:var(--text-light);
+}
+#employeeForm h3{ color:white; }
+
+/* GRID FORM */
+.form-group label{
+    font-weight:600;
+    display:block;
+    margin-bottom:6px;
+    color:#e2e8f0;
+}
+.form-group input,
+.form-group select{
+    width:100%;
+    padding:10px 12px;
+    border-radius:6px;
+    border:1px solid var(--border-color);
+    background:#0f172a;
+    color:white;
+    outline:none;
+}
+.form-group input:focus,
+.form-group select:focus{
+    border-color:var(--ocean-blue);
+    box-shadow:0 0 4px var(--ocean-blue);
+}
+
+/* submit/cancel */
+.form-actions button{
+    margin-left:10px;
+}
+
+/* IMPORT EXCEL BOX */
+#importSection{
+    background:var(--card-bg);
+    padding:20px;
+    border-radius:12px;
+    border:2px dashed var(--ocean-blue);
+}
+.employee-table-wrapper {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 14px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+
+    /* giúp container chạy xuống theo bảng */
+    display: block;
+}
+.email-tag{
+    background:rgba(34,197,94,0.18);
+    color:#4ade80;
+    padding:5px 10px;
+    border-radius:10px;
+    border:1px solid rgba(74,222,128,0.35);
+    font-weight:600;
+}
+
+/* ANIM */
+@keyframes fade{ from{opacity:0; transform:translateY(10px);} to{opacity:1;} }
