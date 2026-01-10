@@ -7,7 +7,7 @@ class connectDB {
         $user = "root";
         $pass = "";
         $db   = "web_hotel_mngt";   // TÊN DATABASE
-        $port = 3307;               // CỔNG MySQL CỦA BẠN
+        $port = 3306;               // CỔNG MySQL CỦA BẠN
 
         $this->con = mysqli_connect($host, $user, $pass, $db, $port);
 
