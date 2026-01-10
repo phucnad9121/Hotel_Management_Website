@@ -1,18 +1,7 @@
 <?php
 class GuestController extends controller {
     
-    public function __construct() {
-        // Các action dành cho khách (như create) thì không cần check hoặc check riêng
-        // Nhưng nếu muốn bảo vệ trang quản lý index:
-        
-        // Lấy action hiện tại từ URL để loại trừ các trang public (nếu cần)
-        $action = $_GET['action'] ?? 'index';
-        
-        // Ví dụ: Action 'create' là khách đặt phòng thì không check role admin/employee
-        if ($action != 'create' && $action != 'handleCreate') {
-             $this->requireRole(['admin', 'employee']);
-        }
-    }
+
 
     // Hiển thị form đăng ký
     public function register() {
@@ -60,6 +49,8 @@ class GuestController extends controller {
     // Trang chủ khách hàng
     public function home() {
         session_start();
+        $this->requireRole(['customer']);
+
         if (!isset($_SESSION['guest_id'])) {
             header("Location: ?controller=AuthController&action=login");
             exit();
@@ -100,6 +91,8 @@ class GuestController extends controller {
         //=============Phần mới thêm=============//
     public function myBookings() {
         session_start();
+        $this->requireRole(['customer']);
+
         if (!isset($_SESSION['guest_id'])) {
             header("Location: ?controller=AuthController&action=login");
             exit();
@@ -129,6 +122,8 @@ class GuestController extends controller {
     // Trang đặt dịch vụ
     public function orderService() {
         session_start();
+        $this->requireRole(['customer']);
+
         if (!isset($_SESSION['guest_id'])) {
             header("Location: ?controller=AuthController&action=login");
             exit();
@@ -172,6 +167,8 @@ class GuestController extends controller {
     // Xem dịch vụ đã đặt
     public function viewMyServices() {
         session_start();
+        $this->requireRole(['customer']);
+
         if (!isset($_SESSION['guest_id']) || !isset($_GET['booking_id'])) {
             header("Location: ?controller=GuestController&action=home");
             exit();
@@ -205,6 +202,8 @@ class GuestController extends controller {
 
     // [MỚI] Xử lý Thêm mới hoặc Cập nhật (Dùng chung 1 action)
     public function saveGuest() {
+        $this->requireRole(['customer']);
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $guestModel = $this->model("GuestModel");
             
@@ -263,6 +262,8 @@ class GuestController extends controller {
 
     // [MỚI] Xử lý Xóa an toàn
     public function deleteGuest() {
+        $this->requireRole(['customer']);
+
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
             $bookingModel = $this->model("BookingModel");
@@ -287,6 +288,8 @@ class GuestController extends controller {
 
     // --- 1. XUẤT EXCEL (Dùng thư viện PHPExcel chuẩn) ---
     public function exportExcel() {
+        $this->requireRole(['customer']);
+
         // 1. Gọi Models lấy dữ liệu
         $model = $this->model("GuestModel");
         $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
@@ -365,6 +368,8 @@ class GuestController extends controller {
 
     // --- 2. NHẬP EXCEL (Dùng thư viện PHPExcel chuẩn) ---
     public function importExcel() {
+        $this->requireRole(['customer']);
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['excel_file'])) {
             $file = $_FILES['excel_file']['tmp_name'];
 
