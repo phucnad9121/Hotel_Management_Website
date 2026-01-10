@@ -15,11 +15,13 @@
                     </form>
                 </div>
 
-                <div class="right-tools">
-                    <button class="btn-custom-white" onclick="location.reload()">
-                        <i class="fas fa-sync-alt"></i> Làm mới
-                    </button>
-                </div>
+                <div class="right-tools" style="display: flex; gap: 10px;">
+                <a href="?controller=BookingController&action=exportExcel" class="btn-custom-white" style="background: #27ae60; color: white; text-decoration: none; padding: 10px 15px; display: inline-flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-file-excel"></i> Xuất Excel
+                </a>
+
+
+            </div>
             </div>
 
             <div class="table-container">
@@ -120,11 +122,7 @@
                                         </a>
                                     <?php endif; ?>
                                     
-                                    <button class="btn-icon" style="background: #9b59b6;" 
-                                            onclick='viewDetails(<?= json_encode($row["MaDatPhong"], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>)'
-                                            title="Xem chi tiết">
-                                        <i class="fas fa-info-circle"></i>
-                                    </button>
+
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -209,9 +207,7 @@ function addService(maDatPhong) {
     window.location.href = `?controller=BookingController&action=addServiceAdmin&booking_id=${maDatPhong}`;
 }
 
-function viewDetails(maDatPhong) {
-    alert('Chức năng xem chi tiết đang được phát triển!\nMã đặt phòng: ' + maDatPhong);
-}
+
 
 // Đóng modal khi click bên ngoài
 document.getElementById('assignRoomModal').addEventListener('click', function(e) {

@@ -22,17 +22,25 @@ class AuthController extends controller {
         ]);
     }
 
-   public function handleLogin() {
+    public function handleLogin() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $userType = $_POST['account_type'];
-            $user = $_POST['username']; // Đối với khách hàng, đây là Số điện thoại
+            $user = $_POST['username'];
             $pass = $_POST['password'];
             $model = $this->model("AccountModel");
+
+            // Khởi động session nếu chưa có
+            if (session_status() == PHP_SESSION_NONE) session_start();
 
             switch ($userType) {
                 case "quan_tri":
                     $check = $model->checkAdminLogin($user, $pass);
                     if ($check) {
+                        // LƯU SESSION CHO ADMIN
+                        $_SESSION['user_id'] = $check['MaAdmin'] ?? $user; // Hoặc ID tương ứng
+                        $_SESSION['user_role'] = 'admin'; // Đánh dấu là Admin
+                        $_SESSION['user_name'] = "Quản Trị Viên";
+                        
                         header("Location: ?controller=AdminController&action=index");
                         exit();
                     }
@@ -41,8 +49,14 @@ class AuthController extends controller {
                 case "nhan_vien":
                     $check = $model->checkEmployeeLogin($user, $pass);
                     if ($check) {
-                        // Chuyển hướng tới trang nhân viên (Bạn cần tạo EmployeeController)
-                        header("Location: ?controller=EmployeeController&action=index");
+                        // LƯU SESSION CHO NHÂN VIÊN
+                        $_SESSION['user_id'] = $check['MaDangNhap']; 
+                        $_SESSION['user_role'] = 'employee'; // Đánh dấu là Nhân viên
+                        // Lấy tên nhân viên nếu cần thiết từ model (đã join bảng)
+                        $_SESSION['user_name'] = $user;
+
+                        // Chuyển hướng tới trang đặt phòng hoặc trang chủ nhân viên
+                        header("Location: ?controller=BookingController&action=index"); 
                         exit();
                     }
                     break;
@@ -50,23 +64,18 @@ class AuthController extends controller {
                 case "khach_hang":
                     $check = $model->checkGuestLogin($user, $pass);
                     if ($check) {
-                        // QUAN TRỌNG: Bạn phải lưu Session ở đây
-                        if (session_status() == PHP_SESSION_NONE) session_start();
-                        
-                        // Giả sử cột ID trong DB của bạn là 'MaKhachHang'
-                        $_SESSION['guest_id'] = $check['MaKhachHang']; 
+                        $_SESSION['guest_id'] = $check['MaKhachHang'];
                         $_SESSION['guest_name'] = $check['HoTen'];
-                        
-                        header("Location: ?controller=GuestController&action=home"); // Chuyển về home của khách
+                        header("Location: ?controller=GuestController&action=home");
                         exit();
                     }
                     break;
             }
 
-            // Nếu chạy xuống đến đây tức là không khớp tài khoản nào
             echo "<script>alert('Tài khoản hoặc mật khẩu không chính xác!'); window.history.back();</script>";
         }
     }
+    
     public function logout() {
             // 1. Khởi động session nếu chưa có
             if (session_status() == PHP_SESSION_NONE) {

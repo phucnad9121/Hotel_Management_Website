@@ -2,8 +2,12 @@
 class EmployeeController extends controller {
     
     public function __construct() {
+        // Chỉ cho phép 'admin' truy cập
+        $this->requireRole(['admin']);
+        
         $this->empModel = $this->model("EmployeeModel");
     }
+
 
     public function index() {
         $keyword = isset($_POST['keyword']) ? $_POST['keyword'] : "";

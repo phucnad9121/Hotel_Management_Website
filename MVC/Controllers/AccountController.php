@@ -1,5 +1,11 @@
 <?php
 class AccountController extends controller {
+    
+    public function __construct() {
+        // Chỉ cho phép 'admin' truy cập
+        $this->requireRole(['admin']);
+    }
+    
     public function index() {
         $model = $this->model("AccountModel");
         $accounts = $model->getAllLoginAccounts();

@@ -1,6 +1,11 @@
 <?php
 class ReportController extends controller {
     
+    public function __construct() {
+        // Chỉ cho phép 'admin' truy cập
+        $this->requireRole(['admin']);
+    }
+
     // Trang báo cáo tổng hợp
     public function index() {
         $bookingModel = $this->model("BookingModel");

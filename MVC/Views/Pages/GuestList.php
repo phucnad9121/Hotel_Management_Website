@@ -30,9 +30,6 @@
                        <i class="fas fa-file-import" style="color: #e67e22;"></i> Nhập File
                     </button>
 
-                    <button class="btn-custom-white" onclick="location.reload()">
-                        <i class="fas fa-sync-alt"></i> Làm mới
-                    </button>
                 </div>
             </div>
 

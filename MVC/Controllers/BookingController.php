@@ -1,6 +1,20 @@
 <?php
 class BookingController extends controller {
     
+    public function __construct() {
+        // Các action dành cho khách (như create) thì không cần check hoặc check riêng
+        // Nhưng nếu muốn bảo vệ trang quản lý index:
+        
+        // Lấy action hiện tại từ URL để loại trừ các trang public (nếu cần)
+        $action = $_GET['action'] ?? 'index';
+        
+        // Ví dụ: Action 'create' là khách đặt phòng thì không check role admin/employee
+        if ($action != 'create' && $action != 'handleCreate') {
+             $this->requireRole(['admin', 'employee']);
+        }
+    }
+
+
     // Hiển thị form đặt phòng
     public function create() {
         session_start();
@@ -33,35 +47,47 @@ class BookingController extends controller {
             
             $maLoaiPhong = $_POST['ma_loai_phong'];
             
-            // Kiểm tra số phòng còn trống
+            // Kiểm tra phòng trống... (giữ nguyên code cũ)
             $availableRooms = $roomTypeModel->countAvailableRooms($maLoaiPhong);
             if ($availableRooms <= 0) {
-                echo "<script>alert('Loại phòng này đã hết! Vui lòng chọn loại khác.'); window.history.back();</script>";
+                echo "<script>alert('Loại phòng này đã hết!'); window.history.back();</script>";
                 return;
             }
+            
+            // Tính toán
+            $date1 = new DateTime($_POST['ngay_nhan']);
+            $date2 = new DateTime($_POST['ngay_tra']);
+            $diff = $date1->diff($date2);
+            $soNgay = $diff->days;
+            
+            $roomType = $roomTypeModel->getById($maLoaiPhong);
+            $tongTien = $soNgay * $roomType['GiaPhong'];
+            $tienCoc = $tongTien * 0.5; // Tính cọc để hiển thị/ghi chú
+            
+            // Tạo nội dung ghi chú tự động
+            $ghiChuKhach = $_POST['ghi_chu'] ?? '';
+            $ghiChuHeThong = "ROOMTYPE:$maLoaiPhong | TỔNG: ".number_format($tongTien)." | ĐÃ CỌC 50%: ".number_format($tienCoc);
             
             $data = [
                 'NgayDatPhong' => date('Y-m-d'),
                 'NgayNhanPhong' => $_POST['ngay_nhan'],
                 'NgayTraPhong' => $_POST['ngay_tra'],
                 'MaKhachHang' => $_SESSION['guest_id'],
-                'GhiChu' => "ROOMTYPE:$maLoaiPhong|" . ($_POST['ghi_chu'] ?? '')
+                // Nối ghi chú của khách và ghi chú hệ thống về tiền cọc
+                'GhiChu' => $ghiChuHeThong . " | Note: " . $ghiChuKhach,
+                'ThoiGianLuuTru' => $soNgay,
+                'SoTienDatPhong' => $tongTien // VẪN LƯU TỔNG TIỀN để thống kê đúng
             ];
             
-            // Tính số ngày và tiền
-            $date1 = new DateTime($data['NgayNhanPhong']);
-            $date2 = new DateTime($data['NgayTraPhong']);
-            $diff = $date1->diff($date2);
-            $soNgay = $diff->days;
-            
-            $roomType = $roomTypeModel->getById($maLoaiPhong);
-            $data['ThoiGianLuuTru'] = $soNgay;
-            $data['SoTienDatPhong'] = $soNgay * $roomType['GiaPhong'];
-            
             if ($model->createBooking($data)) {
-                echo "<script>alert('Gửi yêu cầu đặt phòng thành công! Vui lòng chờ xác nhận.'); window.location.href='?controller=GuestController&action=home';</script>";
+                // Thông báo kiểu "Giả lập thanh toán thành công"
+                $msg = "Đặt phòng thành công! \\n";
+                $msg .= "Hệ thống ghi nhận bạn đã cọc: " . number_format($tienCoc) . " VNĐ (50%). \\n";
+                $msg .= "Số tiền còn lại cần thanh toán tại quầy: " . number_format($tongTien - $tienCoc) . " VNĐ.";
+                
+                echo "<script>alert('$msg'); window.location.href='?controller=GuestController&action=home';</script>";
             } else {
-                echo "<script>alert('Đặt phòng thất bại!'); window.history.back();</script>";
+                echo "<script>alert('Lỗi hệ thống!'); window.history.back();</script>";
             }
         }
     }
@@ -172,6 +198,90 @@ class BookingController extends controller {
                 echo "<script>alert('Hủy đặt phòng thành công!'); window.location.href='?controller=BookingController&action=index';</script>";
             }
         }
+    }
+
+    public function exportExcel() {
+        // 1. Lấy dữ liệu
+        $model = $this->model("BookingModel");
+        $bookings = $model->getAll(); // Lấy toàn bộ danh sách
+        
+        // 2. Thiết lập Header để tải file Excel
+        $filename = "Danh_Sach_Dat_Phong_" . date('Y-m-d') . ".xls";
+        header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+        header("Content-Disposition: attachment; filename=\"$filename\"");
+        header("Pragma: no-cache"); 
+        header("Expires: 0");
+
+        // 3. Xuất dữ liệu dưới dạng bảng HTML (Excel đọc tốt định dạng này)
+        // Lưu ý: Dùng <meta charset='utf-8'> để không bị lỗi phông tiếng Việt
+        echo "
+        <html xmlns:x='urn:schemas-microsoft-com:office:excel'>
+        <head>
+            <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+            <style>
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid #000; padding: 5px; text-align: left; }
+                th { background-color: #f2f2f2; font-weight: bold; }
+                .text-center { text-align: center; }
+                .text-right { text-align: right; }
+            </style>
+        </head>
+        <body>
+            <h2 style='text-align: center'>DANH SÁCH ĐẶT PHÒNG KHÁCH SẠN</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã ĐP</th>
+                        <th>Họ Tên Khách</th>
+                        <th>SĐT</th>
+                        <th>Ngày Đặt</th>
+                        <th>Ngày Nhận</th>
+                        <th>Ngày Trả</th>
+                        <th>Số Đêm</th>
+                        <th>Tổng Tiền</th>
+                        <th>Trạng Thái</th>
+                        <th>Ghi Chú</th>
+                    </tr>
+                </thead>
+                <tbody>";
+        
+        if (!empty($bookings)) {
+            foreach ($bookings as $row) {
+                // Xử lý hiển thị ngày tháng
+                $ngayDat = date('d/m/Y', strtotime($row['NgayDatPhong']));
+                $ngayNhan = date('d/m/Y', strtotime($row['NgayNhanPhong']));
+                $ngayTra = date('d/m/Y', strtotime($row['NgayTraPhong']));
+                $tien = number_format($row['SoTienDatPhong']);
+                
+                // Trạng thái (Dịch sang tiếng Việt cho đẹp nếu cần)
+                $statusMap = [
+                    'Pending' => 'Chờ xác nhận',
+                    'Confirmed' => 'Đã xác nhận',
+                    'Checkin' => 'Đang ở',
+                    'Checkout' => 'Đã trả phòng',
+                    'Cancelled' => 'Đã hủy'
+                ];
+                $trangThai = $statusMap[$row['TrangThai']] ?? $row['TrangThai'];
+
+                echo "<tr>
+                        <td class='text-center'>#{$row['MaDatPhong']}</td>
+                        <td>{$row['HoKhachHang']} {$row['TenKhachHang']}</td>
+                        <td class='text-center'>'{$row['SoDienThoaiKhachHang']}</td> <td class='text-center'>$ngayDat</td>
+                        <td class='text-center'>$ngayNhan</td>
+                        <td class='text-center'>$ngayTra</td>
+                        <td class='text-center'>{$row['ThoiGianLuuTru']}</td>
+                        <td class='text-right'>{$tien} đ</td>
+                        <td>$trangThai</td>
+                        <td>{$row['GhiChu']}</td>
+                    </tr>";
+            }
+        }
+
+        echo "  </tbody>
+            </table>
+        </body>
+        </html>";
+        exit(); // Dừng script để không in thêm nội dung thừa
     }
     
     // API lấy danh sách phòng trống (ĐÃ SỬA ĐỂ GỌI ĐÚNG BOOKING MODEL)
