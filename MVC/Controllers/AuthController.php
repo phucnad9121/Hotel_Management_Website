@@ -64,8 +64,15 @@ class AuthController extends controller {
                 case "khach_hang":
                     $check = $model->checkGuestLogin($user, $pass);
                     if ($check) {
+                        if (session_status() == PHP_SESSION_NONE) session_start();
+                        
                         $_SESSION['guest_id'] = $check['MaKhachHang'];
                         $_SESSION['guest_name'] = $check['HoTen'];
+                        
+                        // --- DÒNG QUAN TRỌNG MỚI THÊM ---
+                        $_SESSION['user_role'] = 'customer'; // Đánh dấu đây là Khách hàng
+                        // --------------------------------
+                        
                         header("Location: ?controller=GuestController&action=home");
                         exit();
                     }
@@ -75,7 +82,7 @@ class AuthController extends controller {
             echo "<script>alert('Tài khoản hoặc mật khẩu không chính xác!'); window.history.back();</script>";
         }
     }
-    
+
     public function logout() {
             // 1. Khởi động session nếu chưa có
             if (session_status() == PHP_SESSION_NONE) {
