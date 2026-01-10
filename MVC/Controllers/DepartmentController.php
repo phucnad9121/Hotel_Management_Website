@@ -1,5 +1,11 @@
 <?php
 class DepartmentController extends controller {
+    
+    public function __construct() {
+        // Chỉ cho phép 'admin' truy cập
+        $this->requireRole(['admin']);
+    }
+
     // Hiển thị danh sách bộ phận
     public function index() {
         $model = $this->model("DepartmentModel");

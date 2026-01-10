@@ -3,35 +3,32 @@ class connectDB {
     protected $con;
 
     public function __construct() {
-        $host = "127.0.0.1";       
-        $user = "root";
-        $pass = "";
-        $db   = "web_hotel_mngt";   // TÊN DATABASE
-        $port = 3307;               // CỔNG MySQL CỦA BẠN
-
-        $this->con = mysqli_connect($host, $user, $pass, $db, $port);
+        $this->con = mysqli_connect(
+            "localhost",
+            "root",
+            "",
+            "web_hotel_mngt"   // TÊN DATABASE
+        );
 
         if (!$this->con) {
-            die("Kết nối DB thất bại! (" . mysqli_connect_errno() . ") " . mysqli_connect_error());
+            die("Kết nối DB thất bại!");
         }
 
-        mysqli_set_charset($this->con, "utf8mb4");
+        mysqli_set_charset($this->con, "utf8");
     }
 
     public function select($sql) {
         $result = mysqli_query($this->con, $sql);
         $data = [];
-        if ($result) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                $data[] = $row;
-            }
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
         }
         return $data;
     }
 
     public function selectOne($sql) {
         $result = mysqli_query($this->con, $sql);
-        return $result ? mysqli_fetch_assoc($result) : null;
+        return mysqli_fetch_assoc($result);
     }
 
     public function execute($sql) {

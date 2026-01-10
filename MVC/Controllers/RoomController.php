@@ -1,6 +1,19 @@
 <?php
 class RoomController extends Controller {
 
+    public function __construct() {
+        // Các action dành cho khách (như create) thì không cần check hoặc check riêng
+        // Nhưng nếu muốn bảo vệ trang quản lý index:
+        
+        // Lấy action hiện tại từ URL để loại trừ các trang public (nếu cần)
+        $action = $_GET['action'] ?? 'index';
+        
+        // Ví dụ: Action 'create' là khách đặt phòng thì không check role admin/employee
+        if ($action != 'create' && $action != 'handleCreate') {
+             $this->requireRole(['admin', 'employee']);
+        }
+    }
+
     public function index() {
         // 1. Load Models
         $roomModel = $this->model("RoomModel");

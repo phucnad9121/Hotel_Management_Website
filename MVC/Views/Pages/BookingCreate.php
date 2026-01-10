@@ -78,7 +78,6 @@
         </div>
 
         <form action="?controller=BookingController&action=handleCreate" method="POST" id="bookingForm">
-            <!-- Thông tin khách hàng -->
             <div class="form-section">
                 <h3><i class="fas fa-user"></i> Thông tin khách hàng</h3>
                 <div class="form-row">
@@ -111,7 +110,6 @@
                 </div>
             </div>
 
-            <!-- Thông tin đặt phòng -->
             <div class="form-section">
                 <h3><i class="fas fa-bed"></i> Thông tin đặt phòng</h3>
                 <div class="form-row">
@@ -164,21 +162,46 @@
                 </div>
             </div>
 
-            <!-- Ước tính chi phí -->
             <div class="estimate-box">
                 <div style="font-size: 1.2rem; margin-bottom: 10px;">
-                    <i class="fas fa-calculator"></i> Ước tính chi phí
+                    <i class="fas fa-calculator"></i> Chi phí dự kiến
                 </div>
-                <div id="estimateDetails" style="margin-bottom: 10px; opacity: 0.9;">
+                
+                <div id="estimateDetails" style="margin-bottom: 5px; opacity: 0.9;">
                     Chọn ngày để xem ước tính
                 </div>
-                <div class="estimate-amount" id="estimateAmount">0 VNĐ</div>
-                <div style="font-size: 0.9rem; opacity: 0.8;">
-                    * Giá chưa bao gồm dịch vụ phát sinh
+                
+                <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed rgba(255,255,255,0.3);">
+                    <span>Tổng giá trị đơn:</span>
+                    <span id="totalAmount" style="font-weight: bold;">0 VNĐ</span>
                 </div>
-            </div>
 
-            <!-- Nút hành động -->
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; color: #ffd700; font-size: 1.2rem; font-weight: bold;">
+                    <span><i class="fas fa-money-bill-wave"></i> Cần cọc trước (50%):</span>
+                    <span id="depositAmount">0 VNĐ</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; padding: 5px 0; font-size: 0.9rem; font-style: italic;">
+                    <span>Thanh toán tại quầy sau:</span>
+                    <span id="remainAmount">0 VNĐ</span>
+                </div>
+
+                <div id="qrBox" style="display: none; text-align: center; margin-top: 20px; background: white; padding: 15px; border-radius: 10px; color: #333;">
+                    <h4 style="color: #333; margin-bottom: 10px; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+                        <i class="fas fa-qrcode"></i> QUÉT MÃ ĐỂ ĐẶT CỌC
+                    </h4>
+                    
+                    <img id="qrImage" src="" alt="QR Code" style="max-width: 250px; border: 1px solid #ddd; border-radius: 5px;">
+                    
+                    <div style="color: #333; margin-top: 10px; font-weight: bold;">
+                        Nội dung CK: <span id="qrContent" style="color: #e11d48;">DAT COC</span>
+                    </div>
+                    <div style="color: #64748b; font-size: 0.85rem; margin-top: 5px; font-style: italic;">
+                        * Vui lòng thanh toán trước khi gửi yêu cầu
+                    </div>
+                </div>
+                </div>
+
             <div style="display: flex; gap: 15px; margin-top: 30px;">
                 <button type="submit" class="btn-submit" style="flex: 1;">
                     <i class="fas fa-paper-plane"></i> Gửi yêu cầu đặt phòng
@@ -194,12 +217,27 @@
 
 <script>
 function updateEstimate() {
+    // --- CẤU HÌNH TÀI KHOẢN NGÂN HÀNG (SỬA Ở ĐÂY) ---
+    const MY_BANK = 'MB';           // Mã ngân hàng (MB, VCB, ACB, BIDV, TECHCOMBANK...)
+    const MY_ACCOUNT = '0363294932'; // Số tài khoản của bạn
+    const MY_NAME = 'NGUYEN VAN A'; // Tên chủ tài khoản
+    // ------------------------------------------------
+
     const roomType = document.getElementById('roomType');
     const checkin = document.getElementById('checkinDate');
     const checkout = document.getElementById('checkoutDate');
     const availableRooms = document.getElementById('availableRooms');
     const estimateDetails = document.getElementById('estimateDetails');
-    const estimateAmount = document.getElementById('estimateAmount');
+    
+    // Các biến hiển thị tiền
+    const totalEl = document.getElementById('totalAmount');
+    const depositEl = document.getElementById('depositAmount');
+    const remainEl = document.getElementById('remainAmount');
+
+    // Các biến QR (Mới thêm)
+    const qrBox = document.getElementById('qrBox');
+    const qrImage = document.getElementById('qrImage');
+    const qrContent = document.getElementById('qrContent');
     
     if (roomType.value) {
         const option = roomType.options[roomType.selectedIndex];
@@ -217,9 +255,38 @@ function updateEstimate() {
             
             if (diffDays > 0) {
                 const total = diffDays * price;
+                const deposit = Math.round(total * 0.5); // 50% tiền cọc (làm tròn số)
+                const remain = total - deposit; // Số tiền còn lại
+
                 estimateDetails.textContent = `${diffDays} đêm × ${price.toLocaleString()} VNĐ`;
-                estimateAmount.textContent = total.toLocaleString() + ' VNĐ';
+                
+                // Cập nhật giao diện tiền
+                totalEl.textContent = total.toLocaleString() + ' VNĐ';
+                depositEl.textContent = deposit.toLocaleString() + ' VNĐ';
+                remainEl.textContent = remain.toLocaleString() + ' VNĐ';
+
+                // --- LOGIC TẠO MÃ QR (MỚI THÊM) ---
+                // Lấy tên khách từ PHP để làm nội dung chuyển khoản
+                const guestName = "<?= $data['guest']['TenKhachHang'] ?>";
+                
+                // Viết hoa và bỏ dấu tiếng Việt để nội dung CK sạch đẹp
+                const cleanName = guestName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9 ]/g, '');
+                const contentCK = `COC ${cleanName}`;
+
+                // Tạo link VietQR API
+                // Link format: https://img.vietqr.io/image/<BANK>-<ACC>-compact.png?amount=<AMOUNT>&addInfo=<INFO>&accountName=<NAME>
+                const qrUrl = `https://img.vietqr.io/image/${MY_BANK}-${MY_ACCOUNT}-compact.png?amount=${deposit}&addInfo=${encodeURIComponent(contentCK)}&accountName=${encodeURIComponent(MY_NAME)}`;
+
+                qrImage.src = qrUrl;
+                qrContent.textContent = contentCK;
+                qrBox.style.display = 'block';
+                // ----------------------------------
+
+            } else {
+                qrBox.style.display = 'none'; // Ẩn QR nếu ngày không hợp lệ
             }
+        } else {
+            qrBox.style.display = 'none'; // Ẩn QR nếu chưa chọn ngày
         }
     }
 }
