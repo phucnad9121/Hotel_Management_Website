@@ -1,24 +1,38 @@
 <?php
 class GuestProfileModel extends connectDB {
     
-    // 1. Lấy thông tin cá nhân (Giống hàm getGuestById cũ nhưng tách ra cho an toàn)
+    // 1. Lấy thông tin cá nhân
     public function getProfile($id) {
-        // Chỉ lấy những trường cần thiết hiển thị
         $sql = "SELECT * FROM hotels_guests WHERE MaKhachHang = '$id'";
         return $this->selectOne($sql);
     }
 
-    // 2. Kiểm tra trùng SĐT (Trừ chính mình ra)
+    // 2. Kiểm tra khách hàng đã có booking nào chưa (để khóa CMND)
+    public function hasBookings($id) {
+        $sql = "SELECT COUNT(*) as total FROM bookings_booking WHERE MaKhachHang = '$id'";
+        $result = $this->selectOne($sql);
+        return ($result['total'] > 0);
+    }
+
+    // 3. Kiểm tra trùng SĐT (Trừ chính mình)
     public function checkPhoneUnique($phone, $myId) {
         $sql = "SELECT * FROM hotels_guests WHERE SoDienThoaiKhachHang = '$phone' AND MaKhachHang != '$myId'";
         $result = $this->select($sql);
-        return !empty($result); // Trả về true nếu bị trùng
+        return !empty($result); 
     }
 
-    // 3. Cập nhật thông tin (Có xử lý đổi mật khẩu)
+    // [MỚI] 4. Kiểm tra trùng Email (Trừ chính mình)
+    public function checkEmailUnique($email, $myId) {
+        $sql = "SELECT * FROM hotels_guests WHERE EmailKhachHang = '$email' AND MaKhachHang != '$myId'";
+        $result = $this->select($sql);
+        return !empty($result); 
+    }
+
+    // 5. Cập nhật thông tin
     public function updateProfile($id, $ho, $ten, $email, $sdt, $cmnd, $diachi, $newPassword = null) {
+        // Escaping dữ liệu để tránh lỗi SQL Injection cơ bản (nếu framework chưa xử lý)
+        // Lưu ý: Tốt nhất nên dùng Prepared Statements nếu có thể
         
-        // Nếu người dùng KHÔNG nhập mật khẩu mới -> Giữ nguyên mật khẩu cũ
         if (empty($newPassword)) {
             $sql = "UPDATE hotels_guests SET 
                     HoKhachHang = '$ho',
@@ -29,7 +43,6 @@ class GuestProfileModel extends connectDB {
                     DiaChi = '$diachi'
                     WHERE MaKhachHang = '$id'";
         } else {
-            // Nếu có nhập mật khẩu mới -> Cập nhật luôn mật khẩu
             $sql = "UPDATE hotels_guests SET 
                     HoKhachHang = '$ho',
                     TenKhachHang = '$ten',
@@ -40,7 +53,6 @@ class GuestProfileModel extends connectDB {
                     MatKhau = '$newPassword'
                     WHERE MaKhachHang = '$id'";
         }
-        
         return $this->execute($sql);
     }
 }
