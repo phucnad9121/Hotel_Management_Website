@@ -1,0 +1,608 @@
+================================================================================
+                    HUONG DAN TEST REST API BANG POSTMAN
+                         TUNG BUOC - CHI TIET 100%
+================================================================================
+
+⚠️ DOC KY TU DAU DEN CUOI, KHONG BO QUA BUOC NAO!
+
+================================================================================
+PHAN 1: CHUAN BI (BAT BUOC)
+================================================================================
+
+BUOC 1.1: Start XAMPP
+────────────────────────────────────────────────────────
+  1. Mo XAMPP Control Panel
+  2. Click "Start" o dong Apache  → Chuyen mau XANH ✅
+  3. Click "Start" o dong MySQL   → Chuyen mau XANH ✅
+  4. Neu ca 2 deu XANH → Sang buoc tiep
+
+BUOC 1.2: Kiem tra Database
+────────────────────────────────────────────────────────
+  1. Mo trinh duyet (Chrome/Edge)
+  2. Truy cap: http://localhost/phpmyadmin
+  3. Ben trai, click vao database "web_hotel_mngt"
+  4. Kiem tra co cac bang nay:
+     ✅ authentication_admin
+     ✅ authentication_login
+     ✅ hotels_guests
+     ✅ hotelservice_services
+     ✅ bookings_booking
+     ✅ rooms_room
+     ✅ rooms_roomtype
+
+  5. Neu KHONG thay cac bang tren → DUNG O DAY, tao database truoc!
+
+BUOC 1.3: Tao du lieu test (NEU CHUA CO)
+────────────────────────────────────────────────────────
+  1. Trong phpMyAdmin, click tab "SQL" (tren dinh)
+  2. Paste TOAN BO code duoi day vao o nhap lieu:
+
+     ──────────────────────────────────────────────────
+     INSERT INTO authentication_admin (MaDangNhap, TenDangNhap, MatKhau)
+     VALUES ('AD001', 'admin', '123456');
+
+     INSERT INTO hotelservice_services
+       (MaDichVu, TenDichVu, MoTaDichVu, ChiPhiDichVu)
+     VALUES
+       ('DV001', 'Spa Massage', '60 minutes massage', 500000),
+       ('DV002', 'Laundry', 'Same day laundry service', 100000);
+
+     INSERT INTO rooms_roomtype (MaLoaiPhong, TenLoaiPhong, GiaPhong)
+     VALUES ('LP001', 'Standard', 500000);
+
+     INSERT INTO rooms_room (MaPhong, SoPhong, MaLoaiPhong, KhaDung)
+     VALUES ('P101', '101', 'LP001', 'Yes');
+
+     INSERT INTO hotels_guests
+       (MaKhachHang, HoKhachHang, TenKhachHang,
+        SoDienThoaiKhachHang, MatKhau)
+     VALUES
+       ('KH001', 'Nguyen', 'Van A', '0901234567', '123456');
+     ──────────────────────────────────────────────────
+
+  3. Click nut "Go" (goc phai duoi)
+  4. Neu hien "Successfully" hoac khong bao loi → OK ✅
+  5. Neu bao loi "already exists" → Du lieu da co → BO QUA buoc nay
+
+
+================================================================================
+PHAN 2: IMPORT POSTMAN
+================================================================================
+
+BUOC 2.1: Mo Postman
+────────────────────────────────────────────────────────
+  1. Mo ung dung Postman tren may
+  2. Neu hien man hinh login → Click "Skip and go to app" (goc phai duoi)
+  3. Ban se thay man hinh chinh co nut "New" to o giua
+
+BUOC 2.2: Xoa Environment cu (NEU DA TUNG IMPORT)
+────────────────────────────────────────────────────────
+  1. Nhin goc PHAI PHIA TREN man hinh
+  2. Neu thay dropdown co ten "Hotel Management Local" → Lam buoc nay
+  3. Click vao ten "Hotel Management Local" [▼]
+  4. Click "Manage Environments"
+  5. Hover vao dong "Hotel Management Local" → Click icon THUNG RAC 🗑️
+  6. Click "Delete" de xac nhan
+  7. Dong cua so lai
+
+  NEU KHONG THAY "Hotel Management Local" → BO QUA buoc nay
+
+BUOC 2.3: Xoa Collection cu (NEU DA TUNG IMPORT)
+────────────────────────────────────────────────────────
+  1. Ben trai man hinh, tab "Collections"
+  2. Neu thay "Hotel Management REST API" → Lam buoc nay
+  3. Hover vao ten "Hotel Management REST API"
+  4. Click icon 3 cham (...) → Delete → Confirm
+  5. Neu KHONG thay → BO QUA buoc nay
+
+BUOC 2.4: Import Collection MOI
+────────────────────────────────────────────────────────
+  1. Click nut "Import" (goc tren trai, icon folder 📥)
+  2. Click "Upload Files"
+  3. Duyet den:
+     d:\Hotel_Management_Website\Postman\
+  4. CHON FILE:
+     Hotel_Management_REST_API.postman_collection.json
+  5. Click "Open"
+  6. Postman hien: "Hotel Management REST API"
+  7. Click "Import"
+  8. Ben trai hien folder "Hotel Management REST API" → THANH CONG ✅
+
+BUOC 2.5: Import Environment MOI
+────────────────────────────────────────────────────────
+  1. Click nut "Import" LAN NUA (goc tren trai)
+  2. Click "Upload Files"
+  3. Duyet den:
+     d:\Hotel_Management_Website\Postman\
+  4. CHON FILE:
+     Hotel_Management_Local.postman_environment.json
+  5. Click "Open"
+  6. Postman hien: "Hotel Management Local"
+  7. Click "Import"
+  8. THANH CONG ✅
+
+BUOC 2.6: Kich hoat Environment
+────────────────────────────────────────────────────────
+  1. Nhin goc PHAI PHIA TREN man hinh
+  2. Ban se thay dropdown: "No Environment" [▼]
+  3. Click vao dropdown do
+  4. Chon: "Hotel Management Local"
+  5. Sau khi chon, ban se thay:
+     ┌────────────────────────────────────┐
+     │ Hotel Management Local        [▼] │
+     └────────────────────────────────────┘
+  6. OK ✅
+
+BUOC 2.7: Kiem tra Variables
+────────────────────────────────────────────────────────
+  1. Click vao ten "Hotel Management Local" HOAC icon con mat 👁
+  2. Cua so hien ra, kiem tra dong DAU TIEN:
+
+     VARIABLE   │ INITIAL VALUE                        │ CURRENT VALUE
+     ───────────┼──────────────────────────────────────┼─────────────────────────
+     base_url   │ http://localhost/.../api.php/api    │ http://localhost/.../api.php/api
+
+  3. PHAI CO DU ONG "/api.php/api" O CUOI ✅
+  4. Neu DUNG nhu tren → Dong cua so lai
+  5. Neu SAI (thieu api.php) → Sua lai cho dung
+
+
+================================================================================
+PHAN 3: TEST TUNG BUOC (LAM THEO THU TU 1→12)
+================================================================================
+
+✅ TEST 1: HEALTH CHECK - Kiem tra API co chay khong
+────────────────────────────────────────────────────────
+
+  📍 BEN TRAI POSTMAN:
+     1. Tab "Collections" (ben trai)
+     2. Mo rong: 📁 Hotel Management REST API
+     3. Mo rong: 📁 00 - Health
+     4. Click vao: GET Health
+
+  📍 GIUA MAN HINH:
+     Ban se thay:
+     ┌────────────────────────────────────────────┐
+     │ GET  {{base_url}}/health          [Send]  │
+     └────────────────────────────────────────────┘
+
+     👉 Click nut SEND (xanh duong, goc phai)
+
+  📍 BEN DUOI (PHAN RESPONSE):
+     ✅ NEU THANH CONG (Status 200 OK):
+     {
+       "success": true,
+       "message": "OK",
+       "data": {
+         "time": "2026-04-08T10:30:00+07:00"
+       }
+     }
+
+     ❌ NEU RA HTML (trang web login):
+        → DUNG TEST O DAY!
+        → Bao toi: "Status: ___, Response: ___"
+
+     ❌ NEU LOI 500:
+        → Xem phan response co loi PHP khong
+        → Bao toi noi dung loi
+
+  📝 DANH DAU: Test 1 ☐   Status: _____
+
+
+✅ TEST 2: LOGIN - Lay token (QUAN TRONG NHAT!)
+────────────────────────────────────────────────────────
+
+  📍 BEN TRAI POSTMAN:
+     1. 📁 01 - Auth
+     2. Click: POST Login
+
+  📍 GIUA MAN HINH:
+     Tab "Body" (duoi URL bar):
+     {
+       "username": "{{username}}",
+       "password": "{{password}}"
+     }
+     → {{username}} = admin
+     → {{password}} = 123456
+
+     👉 Click nut SEND
+
+  📍 BEN DUOI (PHAN RESPONSE):
+     ✅ NEU THANH CONG (Status 200 OK):
+     {
+       "success": true,
+       "message": "Login successful",
+       "data": {
+         "token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+         "token_type": "Bearer",
+         "expires_in": 3600,
+         "user": {
+           "id": "AD001",
+           "username": "admin",
+           "role": "admin",
+           "display_name": "Administrator",
+           "email": ""
+         }
+       }
+     }
+
+     🔴 TU DONG: Token se duoc LUU VAO variable {{token}}
+     (Nho script trong tab "Tests" cua request)
+
+     ❌ NEU LOI 401 "Invalid username or password":
+        → Chua co admin trong database
+        → Mo phpMyAdmin → Tab SQL → Chay:
+           INSERT INTO authentication_admin
+             (MaDangNhap, TenDangNhap, MatKhau)
+           VALUES ('AD001', 'admin', '123456');
+        → Quay lai Postman → Click SEND lai
+
+     ❌ NEU LOI 500:
+        → Sai thong tin database trong connectDB.php
+        → Hoac chua chay MySQL
+
+  📝 DANH DAU: Test 2 ☐   Status: _____
+               Co token? ☐ (Kiem tra: variable {{token}} da co gia tri?)
+
+
+✅ TEST 3: GET SERVICES - Lay danh sach dich vu
+────────────────────────────────────────────────────────
+
+  📍 BEN TRAI POSTMAN:
+     1. 📁 02 - Services
+     2. Click: GET Services
+
+  📍 GIUA MAN HINH:
+     GET  {{base_url}}/services
+
+     👉 Click nut SEND
+
+  📍 BEN DUOI:
+     ✅ NEU THANH CONG (Status 200 OK):
+     {
+       "success": true,
+       "message": "Services retrieved successfully",
+       "data": [
+         {
+           "MaDichVu": "DV001",
+           "TenDichVu": "Spa Massage",
+           "MoTaDichVu": "60 minutes massage",
+           "ChiPhiDichVu": 500000
+         }
+       ]
+     }
+
+     ❌ NEU "data": [] (mang rong):
+        → Chua co dich vu
+        → Khong sao, test tiep buoc 4 de tao
+
+  📝 DANH DAU: Test 3 ☐   Status: _____
+
+
+✅ TEST 4: CREATE SERVICE - Tao dich vu moi
+────────────────────────────────────────────────────────
+
+  📍 BEN TRAI POSTMAN:
+     1. 📁 02 - Services
+     2. Click: POST Create Service
+
+  📍 KIEM TRA HEADERS:
+     1. Click tab "Headers" (duoi URL bar)
+     2. Phai co dong:
+        Authorization: Bearer {{token}}
+     3. Neu {{token}} MAU DO → Chua co token
+        → Quay lai Test 2, login lai
+
+  📍 TAB BODY:
+     {
+       "MaDichVu": "{{service_id}}",
+       "TenDichVu": "{{service_name}}",
+       "MoTaDichVu": "{{service_description}}",
+       "ChiPhiDichVu": {{service_price}}
+     }
+
+     👉 Click nut SEND
+
+  📍 BEN DUOI:
+     ✅ NEU THANH CONG (Status 201 Created):
+     {
+       "success": true,
+       "message": "Service created successfully",
+       "data": {
+         "MaDichVu": "DV009",
+         "TenDichVu": "Airport Pickup",
+         "MoTaDichVu": "24/7 airport transfer",
+         "ChiPhiDichVu": 350000
+       }
+     }
+
+     ❌ NEU LOI 409 "Service ID already exists":
+        → DV009 da ton tai
+        → Chuyen sang Test 5 (Update)
+
+  📝 DANH DAU: Test 4 ☐   Status: _____
+
+
+✅ TEST 5: UPDATE SERVICE - Sua dich vu
+────────────────────────────────────────────────────────
+
+  📍 BEN TRAI POSTMAN:
+     1. 📁 02 - Services
+     2. Click: PUT Update Service
+
+  📍 TAB BODY:
+     {
+       "TenDichVu": "{{service_name_updated}}",
+       "MoTaDichVu": "{{service_description_updated}}",
+       "ChiPhiDichVu": {{service_price_updated}}
+     }
+     → Se thanh:
+        TenDichVu = Airport Pickup Premium
+        ChiPhiDichVu = 450000
+
+     👉 Click nut SEND
+
+  📍 BEN DUOI:
+     ✅ NEU THANH CONG (Status 200 OK):
+     {
+       "success": true,
+       "message": "Service updated successfully",
+       "data": {...}
+     }
+
+  📝 DANH DAU: Test 5 ☐   Status: _____
+
+
+✅ TEST 6: DELETE SERVICE - Xoa dich vu
+────────────────────────────────────────────────────────
+
+  📍 BEN TRAI POSTMAN:
+     1. 📁 02 - Services
+     2. Click: DELETE Service
+
+  👉 Click nut SEND
+
+  📍 BEN DUOI:
+     ✅ NEU THANH CONG (Status 200 OK):
+     {
+       "success": true,
+       "message": "Service deleted successfully"
+     }
+
+  📝 DANH DAU: Test 6 ☐   Status: _____
+
+
+✅ TEST 7: GET ROOMS - Lay danh sach phong
+────────────────────────────────────────────────────────
+
+  📍 BEN TRAI POSTMAN:
+     1. 📁 03 - Rooms
+     2. Click: GET Rooms
+
+  👉 Click nut SEND
+
+  📍 BEN DUOI:
+     ✅ NEU THANH CONG: Danh sach phong trong "data"
+     ❌ NEU "data": [] → Chua co phong
+        → Vao phpMyAdmin → Tab SQL → Chay:
+           INSERT INTO rooms_roomtype
+             (MaLoaiPhong, TenLoaiPhong, GiaPhong)
+           VALUES ('LP001', 'Standard', 500000);
+
+           INSERT INTO rooms_room
+             (MaPhong, SoPhong, MaLoaiPhong, KhaDung)
+           VALUES ('P101', '101', 'LP001', 'Yes');
+
+  📝 DANH DAU: Test 7 ☐   Status: _____
+
+
+✅ TEST 8: GET AVAILABLE ROOMS - Lay phong trong
+────────────────────────────────────────────────────────
+
+  📍 BEN TRAI POSTMAN:
+     1. 📁 03 - Rooms
+     2. Click: GET Available Rooms
+
+  URL se hien:
+     GET {{base_url}}/rooms/available?type={{room_type_id}}
+     → {{room_type_id}} = LP001
+
+  👉 Click nut SEND
+
+  📍 BEN DUOI:
+     ✅ NEU THANH CONG: Danh sach phong trong
+
+  📝 DANH DAU: Test 8 ☐   Status: _____
+
+
+✅ TEST 9: CREATE BOOKING - Tao dat phong
+────────────────────────────────────────────────────────
+
+  📍 BEN TRAI POSTMAN:
+     1. 📁 04 - Bookings
+     2. Click: POST Create Booking
+
+  📍 TAB BODY:
+     {
+       "MaKhachHang": "{{guest_id}}",
+       "NgayNhanPhong": "{{booking_checkin}}",
+       "NgayTraPhong": "{{booking_checkout}}",
+       "MaLoaiPhong": "{{room_type_id}}",
+       "GhiChu": "{{booking_note}}"
+     }
+
+     👉 Click nut SEND
+
+  📍 BEN DUOI:
+     ✅ NEU THANH CONG (Status 201 Created):
+     {
+       "success": true,
+       "message": "Booking created successfully",
+       "data": {
+         "MaDatPhong": "DP20260408123456789",
+         ...
+       }
+     }
+
+     📝 COPY GIA TRI "MaDatPhong" (vi du: DP20260408123456789)
+        De dung cho Test 10, 11, 12!
+
+     📝 LUU VAO ENVIRONMENT:
+        1. Click vao ten Environment (goc phai tren) ✏️
+        2. Tim variable "booking_id"
+        3. Paste MaDatPhong vao "CURRENT VALUE"
+        4. Click Save
+
+  📝 DANH DAU: Test 9 ☐   Status: _____
+               MaDatPhong: _______________________
+
+
+✅ TEST 10: CONFIRM BOOKING - Xac nhan dat phong
+────────────────────────────────────────────────────────
+
+  📍 BEN TRAI POSTMAN:
+     1. 📁 04 - Bookings
+     2. Click: POST Confirm Booking
+
+  📍 URL:
+     POST {{base_url}}/bookings/{{booking_id}}/confirm
+     → {{booking_id}} = MaDatPhong vua copy o Test 9
+
+  📍 TAB BODY:
+     {
+       "MaPhong": "{{room_id}}"
+     }
+     → {{room_id}} = P0101
+
+  👉 Click nut SEND
+
+  📍 BEN DUOI:
+     ✅ NEU THANH CONG:
+     {
+       "success": true,
+       "message": "Booking confirmed successfully",
+       "data": {
+         "TrangThai": "Confirmed",
+         ...
+       }
+     }
+
+  📝 DANH DAU: Test 10 ☐   Status: _____
+
+
+✅ TEST 11: CHECKIN BOOKING
+────────────────────────────────────────────────────────
+
+  📍 BEN TRAI POSTMAN:
+     1. 📁 04 - Bookings
+     2. Click: POST Checkin Booking
+
+  👉 Click nut SEND
+
+  📍 BEN DUOI:
+     ✅ NEU THANH CONG:
+     {
+       "success": true,
+       "message": "Check-in successful"
+     }
+
+     ❌ NEU LOI 409 "Booking must be confirmed":
+        → Chua lam Test 10
+        → Quay lai Test 10 truoc
+
+  📝 DANH DAU: Test 11 ☐   Status: _____
+
+
+✅ TEST 12: CANCEL BOOKING
+────────────────────────────────────────────────────────
+
+  📍 BEN TRAI POSTMAN:
+     1. 📁 04 - Bookings
+     2. Click: POST Cancel Booking
+
+  👉 Click nut SEND
+
+  📍 BEN DUOI:
+     ✅ NEU THANH CONG:
+     {
+       "success": true,
+       "message": "Booking cancelled successfully"
+     }
+
+  📝 DANH DAU: Test 12 ☐   Status: _____
+
+
+================================================================================
+PHAN 4: BANG TONG KET (DANH DAU KHI TEST XONG)
+================================================================================
+
+  STT | Ten Test              | Method | Status | Ket Qua
+  ────┼───────────────────────┼────────┼────────┼────────
+   1  | Health Check          | GET    | ____   | ☐
+   2  | Login                 | POST   | ____   | ☐ (Co token? ☐)
+   3  | Get Services          | GET    | ____   | ☐
+   4  | Create Service        | POST   | ____   | ☐
+   5  | Update Service        | PUT    | ____   | ☐
+   6  | Delete Service        | DELETE | ____   | ☐
+   7  | Get Rooms             | GET    | ____   | ☐
+   8  | Get Available Rooms   | GET    | ____   | ☐
+   9  | Create Booking        | POST   | ____   | ☐ (ID: _____)
+  10  | Confirm Booking       | POST   | ____   | ☐
+  11  | Checkin Booking       | POST   | ____   | ☐
+  12  | Cancel Booking        | POST   | ____   | ☐
+
+
+================================================================================
+PHAN 5: SUA LOI NHANH
+================================================================================
+
+❌ LOI: Ra HTML thay vi JSON (O BAT KY TEST NAO)
+   → Sai base_url HOAC .htaccess khong hoat dong
+   → KIEM TRA:
+     1. Click Environment ✏️ (goc phai tren)
+     2. Xem variable "base_url"
+     3. PHAI CO DU: http://localhost/Hotel_Management_Website/api.php/api
+     4. Neu thieu "api.php" → Them vao → Save
+   → Neu VAN sai → Bao toi: Status + Response
+
+❌ LOI: 401 "Invalid username or password" (Test 2)
+   → Chua co admin trong DB
+   → Vao phpMyAdmin → Tab SQL → Chay:
+      INSERT INTO authentication_admin
+        (MaDangNhap, TenDangNhap, MatKhau)
+      VALUES ('AD001', 'admin', '123456');
+
+❌ LOI: 401 "Token required" hoac "Unauthorized"
+   → Token khong hop le
+   → Quay lai Test 2, Login lai
+
+❌ LOI: 500 "Server error"
+   → Xem phan response co chi tiet loi khong
+   → Copy noi dung loi gui cho toi
+
+❌ LOI: 404 "Route not found"
+   → URL sai
+   → Kiem tra base_url co dung khong
+
+
+================================================================================
+PHAN 6: MEO NHANH TRONG POSTMAN
+================================================================================
+
+  👀 Xem variables:     Click icon con mat 👁 canh ten Environment
+  ✏️  Sua variables:    Click icon but chi ✏️ canh ten Environment
+  📋 Copy gia tri:      Bo den vao text → Ctrl+C
+  🎨 Dep JSON:          Click icon "{}" goc phai phan Response
+  📊 Xem Status:        Nhin ben trai nut Send (200 OK, 404, 500...)
+  🔄 Refetch token:     Chay lai Test 2 (Login)
+
+
+================================================================================
+                          CHUC TEST THANH CONG! 🚀
+================================================================================
+
+  Neu gap loi, copy paste 3 thu nay:
+  1. Status code (vi du: 200, 401, 404, 500)
+  2. Response body (toan bo JSON hoac HTML hien ra)
+  3. Ten test dang chay (vi du: Test 2 - Login)
+  → Goi lai de duoc ho tro!

@@ -2,7 +2,6 @@
 class DiscountController extends controller {
     
     public function __construct() {
-        // Chỉ cho phép 'admin' truy cập
         $this->requireRole(['admin']);
     }
     

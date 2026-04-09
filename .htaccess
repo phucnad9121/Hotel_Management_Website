@@ -1,4 +1,17 @@
 RewriteEngine On
+RewriteBase /Hotel_Management_Website/
+
+# Keep Authorization header for PHP (Bearer JWT)
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# REST API - Route /api/* requests to api.php
+# MUST come BEFORE the MVC rewrite rule!
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteRule ^api(?:/(.*))?$ api.php [QSA,L]
+
+# Route every non-file request to index.php (MVC web)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]

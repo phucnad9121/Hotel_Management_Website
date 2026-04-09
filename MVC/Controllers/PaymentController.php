@@ -72,7 +72,7 @@ class PaymentController extends controller {
         $serviceCost = (int)$model->getServiceTotalByBooking($bookingId);
 
         $deposit = (int)($roomCost * 0.5); 
-        // ----------------------------------------------
+      
 
         $rate = 0;
         if ($discountId !== '' && $discountId !== 'none' && $discountId !== '0') {
@@ -89,16 +89,13 @@ class PaymentController extends controller {
         if ($rate < 0) $rate = 0;
         if ($rate > 100) $rate = 100;
 
-        // Tính giảm giá (thường giảm trên tổng bill hoặc chỉ tiền phòng, ở đây tính trên tổng)
         $discountAmount = (int)floor(($roomCost + $serviceCost) * $rate / 100);
         
-        // TÍNH SỐ TIỀN CẦN THANH TOÁN CUỐI CÙNG
-        // Công thức: (Tiền Phòng + Dịch Vụ - Giảm Giá) - Tiền Đã Cọc
+        
         $totalCost = ($roomCost + $serviceCost - $discountAmount) - $deposit;
         
         if ($totalCost < 0) $totalCost = 0;
 
-        // Lưu vào bảng Payment (Chỉ lưu số tiền thực tế thu tại quầy)
         $ok = $model->createPayment($bookingId, $roomCost, $serviceCost, $totalCost, $method);
         if (!$ok) {
             echo "<script>alert('Lỗi khi tạo thanh toán!'); window.history.back();</script>";
@@ -106,9 +103,9 @@ class PaymentController extends controller {
         }
 
         $model->updateBookingDiscount($bookingId, $discountId);
-        $model->updateBookingStatus($bookingId, 'Checkout'); // Chuyển trạng thái sang Checkout
-        $model->releaseRooms($bookingId); // Trả phòng trống
-        $model->updateGuestStatusNotReserved($bookingId); // Reset trạng thái khách
+        $model->updateBookingStatus($bookingId, 'Checkout'); 
+        $model->releaseRooms($bookingId); 
+        $model->updateGuestStatusNotReserved($bookingId); 
 
         echo "<script>alert('Thanh toán thành công! (Đã trừ cọc: ".number_format($deposit)." VNĐ)'); window.location.href='?controller=PaymentController&action=index';</script>";
         exit();

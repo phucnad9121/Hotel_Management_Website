@@ -2,12 +2,11 @@
 class AccountController extends controller {
     
     public function __construct() {
-        // Chỉ cho phép 'admin' truy cập
         $this->requireRole(['admin']);
     }
     
     public function index() {
-        $model = $this->model("AccountModel");
+        $model = $this->model("AccountModel"); // tạo instance của AccountModel
         $accounts = $model->getAllLoginAccounts();
 
         if (isset($_POST['search'])) {
@@ -100,7 +99,7 @@ class AccountController extends controller {
                 $model = $this->model("AccountModel");
                 $successCount = 0;
 
-                // Cot: A=MaDangNhap, B=TenDangNhap, C=MatKhau, D=MaNhanVien, E=NguoiDungMoi
+        
                 for ($row = 2; $row <= $highestRow; $row++) {
                     $id = trim((string)$sheet->getCellByColumnAndRow(0, $row)->getValue());
                     $username = trim((string)$sheet->getCellByColumnAndRow(1, $row)->getValue());
@@ -143,30 +142,34 @@ class AccountController extends controller {
         header("Content-Type: application/vnd.ms-excel; charset=utf-8");
         header("Content-Disposition: attachment; filename=\"$filename\"");
         header("Pragma: no-cache");
-        header("Expires: 0");
+        header("Expires: 2");
         echo "\xEF\xBB\xBF";
 
-        echo '<table border="1">';
+        echo '<table border="2">';
         echo '<tr style="background-color: #38bdf8; color: #ffffff; font-weight: bold;">
+                <th>STT</th>
                 <th>MaDangNhap</th>
                 <th>TenDangNhap</th>
                 <th>MaNhanVien</th>
                 <th>NhanVien</th>
                 <th>NguoiDungMoi</th>
+                <th>Hiệp</th>
               </tr>';
 
         if (!empty($accounts)) {
             foreach ($accounts as $row) {
                 echo '<tr>';
+                echo '<td>' . $row['STT'] . '</td>';
                 echo '<td>' . $row['MaDangNhap'] . '</td>';
                 echo '<td>' . $row['TenDangNhap'] . '</td>';
                 echo '<td>' . $row['MaNhanVien'] . '</td>';
                 echo '<td>' . $row['NhanVien'] . '</td>';
                 echo '<td>' . $row['NguoiDungMoi'] . '</td>';
+                echo '<td>Hiệp</td>';
                 echo '</tr>';
             }
         } else {
-            echo '<tr><td colspan="5">Khong co du lieu tim thay</td></tr>';
+            echo '<tr><td colspan="7">Khong co du lieu tim thay</td></tr>';
         }
 
         echo '</table>';

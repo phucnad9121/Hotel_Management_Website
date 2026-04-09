@@ -93,11 +93,11 @@
                 
                 <section class="content-body">
                     <?php 
-                    // Kiểm tra: Nếu Controller gửi tên file (Page) thì require file đó
+                   
                     if (isset($data['Page'])) {
                         require_once "./MVC/Views/Pages/" . $data['Page'] . ".php";
                     } 
-                    // Nếu Controller gửi nội dung trực tiếp (content) thì in ra
+                   
                     else if (isset($data['content'])) {
                         echo $data['content'];
                     }
@@ -108,7 +108,7 @@
 
     <?php 
     } else { 
-        // Trường hợp không phải Admin
+        
         if (isset($data['Page'])) {
             require_once "./MVC/Views/Pages/" . $data['Page'] . ".php";
         } else if (isset($data['content'])) {

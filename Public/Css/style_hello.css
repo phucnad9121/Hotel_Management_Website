@@ -1,8 +1,8 @@
 :root {
-    --bg-dark: #0f172a;        /* Xám xanh đậm */
-    --card-bg: #1e293b;        /* Xám nhẹ hơn cho card */
-    --ocean-blue: #0284c7;     /* Xanh đại dương */
-    --ocean-hover: #0369a1;    /* Xanh đại dương đậm khi hover */
+    --bg-dark: #0f172a;       
+    --card-bg: #1e293b;        
+    --ocean-blue: #0284c7;     
+    --ocean-hover: #0369a1;    
     --text-main: #f1f5f9;
 }
 
@@ -28,7 +28,7 @@ body {
 
 .left-image {
     flex: 1.2;
-    /* Chỉ cần lùi 1 cấp bằng ../ để ra khỏi folder Css */
+
     background: linear-gradient(to bottom, rgba(15, 23, 42, 0.2), var(--bg-dark)), 
                 url('../Picture/hotel.jpg') no-repeat center/cover;
     display: flex;
@@ -72,7 +72,7 @@ body {
 }
 
 .btn-primary {
-    background: var(--ocean-blue);
+    background:#000000;
     color: white;
 }
 

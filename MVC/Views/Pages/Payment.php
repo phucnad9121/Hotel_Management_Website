@@ -101,7 +101,7 @@
         </div>
 
         <div id="paymentDetail" class="info-card" style="margin-top: 20px;">
-            <h4 style="color: var(--ocean-blue); margin-bottom: 15px;">CHI TIET THANH TOAN</h4>
+            <h4 style="color: var(--ocean-blue); margin-bottom: 15px;">CHI TIẾT THANH TOÁN</h4>
             <form id="checkoutForm" action="?controller=PaymentController&action=checkout" method="POST">
                 <input type="hidden" name="MaDatPhong" id="MaDatPhong" value="">
 
@@ -148,9 +148,9 @@
                     <div class="form-group" style="grid-column: span 2;">
                         <label>Phương thức thanh toán</label>
                         <select name="PhuongThuc" id="PhuongThuc" class="form-control">
-                            <option value="Cash">Tien mat</option>
-                            <option value="Card">The</option>
-                            <option value="Transfer">Chuyen khoan</option>
+                            <option value="Cash">Tiền mặt</option>
+                            <option value="Card">Thẻ</option>
+                            <option value="Transfer">Chuyển khoản</option>
                         </select>
                     </div>
                 </div>

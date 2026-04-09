@@ -5,7 +5,7 @@
     --text-white: #f1f5f9;
 }
 
-/* ===== Khung hiển thị bảng ===== */
+
 .table-container {
     background: var(--card-bg);
     border-radius: 12px;
@@ -15,7 +15,7 @@
     color: var(--text-white);
 }
 
-/* ===== Bảng ===== */
+
 .admin-table {
     width: 100%;
     border-collapse: collapse;
@@ -40,7 +40,7 @@
     background: rgba(255,255,255,0.05);
 }
 
-/* ===== Badge chức danh ===== */
+
 .badge {
     background: rgba(2,132,199,0.15);
     color: #38bdf8;
@@ -50,13 +50,13 @@
     border: 1px solid rgba(56,189,248,0.35);
 }
 
-/* ===== Lương ===== */
+
 .salary-text {
     color: #10b981;
     font-weight: bold;
 }
 
-/* ===== Nút thao tác chỉnh sửa / xóa ===== */
+
 .action-buttons{
     display: flex;
     justify-content: center;
@@ -88,7 +88,7 @@
     filter: brightness(1.15);
 }
 
-/* Form thêm/chỉnh sửa */
+
 .info-card {
     background: var(--card-bg);
     padding: 20px;
@@ -101,22 +101,22 @@
     border-collapse: collapse;
     font-size: 15px;
     color: var(--text-white);
-    border: 1px solid rgba(255,255,255,0.15); /* viền ngoài bảng */
+    border: 1px solid rgba(255,255,255,0.15); 
 }
 
 .admin-table th,
 .admin-table td {
     padding: 12px 14px;
-    border-right: 1px solid rgba(255,255,255,0.15); /* đường ngăn cách cột */
+    border-right: 1px solid rgba(255,255,255,0.15); 
 }
 
-/* bỏ viền cột cuối cho đẹp */
+
 .admin-table th:last-child,
 .admin-table td:last-child {
     border-right: none;
 }
 
-/* đường kẻ hàng rõ hơn */
+
 .admin-table tr {
     border-bottom: 1px solid rgba(255,255,255,0.15);
 }

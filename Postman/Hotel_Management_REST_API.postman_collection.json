@@ -1,0 +1,683 @@
+{
+  "info": {
+    "_postman_id": "2d9161eb-7fa5-4ebf-b9da-2d8d9a01e35e",
+    "name": "Hotel Management REST API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "codex-gpt-5"
+  },
+  "item": [
+    {
+      "name": "00 - Health",
+      "item": [
+        {
+          "name": "GET Health",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/health",
+            "description": "Quick health check for REST API."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "01 - Auth",
+      "item": [
+        {
+          "name": "POST Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "let jsonData = {};",
+                  "try {",
+                  "    jsonData = pm.response.json();",
+                  "} catch (e) {}",
+                  "",
+                  "if (jsonData && jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.data.token);",
+                  "    pm.environment.set('token', jsonData.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": "{{base_url}}/auth/login",
+            "description": "Login and auto-save Bearer token into collection/environment variable `token`."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Me",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/auth/me"
+          },
+          "response": []
+        },
+        {
+          "name": "POST Refresh",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let jsonData = {};",
+                  "try {",
+                  "    jsonData = pm.response.json();",
+                  "} catch (e) {}",
+                  "",
+                  "if (jsonData && jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.data.token);",
+                  "    pm.environment.set('token', jsonData.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/auth/refresh"
+          },
+          "response": []
+        },
+        {
+          "name": "POST Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{register_username}}\",\n  \"password\": \"{{register_password}}\"\n}"
+            },
+            "url": "{{base_url}}/auth/register"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - Services",
+      "item": [
+        {
+          "name": "GET Services",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/services"
+          },
+          "response": []
+        },
+        {
+          "name": "GET Service By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/services/{{service_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "POST Create Service",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let jsonData = {};",
+                  "try {",
+                  "    jsonData = pm.response.json();",
+                  "} catch (e) {}",
+                  "",
+                  "if (jsonData && jsonData.data && jsonData.data.MaDichVu) {",
+                  "    pm.collectionVariables.set('service_id', jsonData.data.MaDichVu);",
+                  "    pm.environment.set('service_id', jsonData.data.MaDichVu);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"MaDichVu\": \"{{service_id}}\",\n  \"TenDichVu\": \"{{service_name}}\",\n  \"MoTaDichVu\": \"{{service_description}}\",\n  \"ChiPhiDichVu\": {{service_price}}\n}"
+            },
+            "url": "{{base_url}}/services"
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Update Service",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"TenDichVu\": \"{{service_name_updated}}\",\n  \"MoTaDichVu\": \"{{service_description_updated}}\",\n  \"ChiPhiDichVu\": {{service_price_updated}}\n}"
+            },
+            "url": "{{base_url}}/services/{{service_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Service",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/services/{{service_id}}"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - Rooms",
+      "item": [
+        {
+          "name": "GET Rooms",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/rooms"
+          },
+          "response": []
+        },
+        {
+          "name": "GET Available Rooms",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/rooms/available?type={{room_type_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "GET Room By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/rooms/{{room_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "POST Create Room",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"MaPhong\": \"{{room_id}}\",\n  \"SoPhong\": \"{{room_number}}\",\n  \"MaLoaiPhong\": \"{{room_type_id}}\",\n  \"KhaDung\": \"Yes\"\n}"
+            },
+            "url": "{{base_url}}/rooms"
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Update Room",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"SoPhong\": \"{{room_number_updated}}\",\n  \"MaLoaiPhong\": \"{{room_type_id}}\",\n  \"KhaDung\": \"{{room_status}}\"\n}"
+            },
+            "url": "{{base_url}}/rooms/{{room_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Room",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/rooms/{{room_id}}"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - Bookings",
+      "item": [
+        {
+          "name": "GET Bookings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/bookings"
+          },
+          "response": []
+        },
+        {
+          "name": "POST Create Booking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let jsonData = {};",
+                  "try {",
+                  "    jsonData = pm.response.json();",
+                  "} catch (e) {}",
+                  "",
+                  "if (jsonData && jsonData.data && jsonData.data.MaDatPhong) {",
+                  "    pm.collectionVariables.set('booking_id', jsonData.data.MaDatPhong);",
+                  "    pm.environment.set('booking_id', jsonData.data.MaDatPhong);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"MaKhachHang\": \"{{guest_id}}\",\n  \"NgayNhanPhong\": \"{{booking_checkin}}\",\n  \"NgayTraPhong\": \"{{booking_checkout}}\",\n  \"MaLoaiPhong\": \"{{room_type_id}}\",\n  \"GhiChu\": \"{{booking_note}}\"\n}"
+            },
+            "url": "{{base_url}}/bookings"
+          },
+          "response": []
+        },
+        {
+          "name": "GET Booking By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/bookings/{{booking_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Update Booking",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"GhiChu\": \"{{booking_note_updated}}\"\n}"
+            },
+            "url": "{{base_url}}/bookings/{{booking_id}}"
+          },
+          "response": []
+        },
+        {
+          "name": "POST Confirm Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"MaPhong\": \"{{room_id}}\"\n}"
+            },
+            "url": "{{base_url}}/bookings/{{booking_id}}/confirm"
+          },
+          "response": []
+        },
+        {
+          "name": "POST Checkin Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/bookings/{{booking_id}}/checkin"
+          },
+          "response": []
+        },
+        {
+          "name": "POST Cancel Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/bookings/{{booking_id}}/cancel"
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Booking (Alias Cancel)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/bookings/{{booking_id}}"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost/Hotel_Management_Website/api"
+    },
+    {
+      "key": "base_url_fallback",
+      "value": "http://localhost/Hotel_Management_Website/api.php/api"
+    },
+    {
+      "key": "username",
+      "value": "admin"
+    },
+    {
+      "key": "password",
+      "value": "123456"
+    },
+    {
+      "key": "register_username",
+      "value": "employee_test_01"
+    },
+    {
+      "key": "register_password",
+      "value": "123456"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "service_id",
+      "value": "DV009"
+    },
+    {
+      "key": "service_name",
+      "value": "Airport Pickup"
+    },
+    {
+      "key": "service_description",
+      "value": "24/7 airport transfer"
+    },
+    {
+      "key": "service_price",
+      "value": "350000"
+    },
+    {
+      "key": "service_name_updated",
+      "value": "Airport Pickup Premium"
+    },
+    {
+      "key": "service_description_updated",
+      "value": "Private premium airport transfer"
+    },
+    {
+      "key": "service_price_updated",
+      "value": "450000"
+    },
+    {
+      "key": "room_id",
+      "value": "P0101"
+    },
+    {
+      "key": "room_number",
+      "value": "101"
+    },
+    {
+      "key": "room_number_updated",
+      "value": "101A"
+    },
+    {
+      "key": "room_type_id",
+      "value": "LP001"
+    },
+    {
+      "key": "room_status",
+      "value": "Yes"
+    },
+    {
+      "key": "guest_id",
+      "value": "KH001"
+    },
+    {
+      "key": "booking_id",
+      "value": ""
+    },
+    {
+      "key": "booking_checkin",
+      "value": "2026-04-10"
+    },
+    {
+      "key": "booking_checkout",
+      "value": "2026-04-12"
+    },
+    {
+      "key": "booking_note",
+      "value": "Need quiet room"
+    },
+    {
+      "key": "booking_note_updated",
+      "value": "Need high floor room"
+    }
+  ]
+}
