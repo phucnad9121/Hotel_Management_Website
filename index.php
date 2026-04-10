@@ -1,57 +1,29 @@
 <?php
 /**
- * Main entry point for both:
- * - legacy MVC web app
- * - RESTful API (/api/*)
+ * Main Entry Point - Handles both REST API and MVC web app
  */
 
-$requestUri = $_SERVER['REQUEST_URI'] ?? '/';
-$path = parse_url($requestUri, PHP_URL_PATH) ?: '/';
-
-$apiCandidates = [$path, (string) $requestUri];
-foreach (['url', 'route', 'q'] as $key) {
-    if (isset($_GET[$key]) && is_string($_GET[$key])) {
-        $apiCandidates[] = '/' . ltrim($_GET[$key], '/');
-    }
-}
-if (isset($_SERVER['PATH_INFO']) && is_string($_SERVER['PATH_INFO'])) {
-    $apiCandidates[] = $_SERVER['PATH_INFO'];
-}
-
-$isApiRequest = false;
-foreach ($apiCandidates as $candidate) {
-    if (preg_match('#(^|/|=)api(?:/|$)#i', (string) $candidate)) {
-        $isApiRequest = true;
-        break;
-    }
-}
+// Check if this is an API request
+$requestUri = $_SERVER['REQUEST_URI'] ?? '';
+$isApiRequest = (stripos($requestUri, '/api') !== false);
 
 if ($isApiRequest) {
-    require_once './MVC/Core/connectDB.php';
-    require_once './MVC/Core/Request.php';
-    require_once './MVC/Core/Response.php';
-    require_once './MVC/Core/JWT.php';
-    require_once './MVC/Core/ApiModel.php';
-    require_once './MVC/Core/ApiController.php';
-    require_once './MVC/Core/ApiRouter.php';
-
-    $request = new Request();
-    $response = new Response();
-
-    $GLOBALS['api_request'] = $request;
-    $GLOBALS['api_response'] = $response;
-
-    $router = new ApiRouter($request, $response);
-    require_once './MVC/Core/routes.php';
+    // === REST API MODE ===
+    require_once __DIR__ . '/config.php';
+    require_once SYSTEM . 'Startup.php';
+    
+    $request = new Http\Request();
+    $response = new Http\Response();
+    $response->setHeader('Access-Control-Allow-Origin: *');
+    $response->setHeader("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+    $response->setHeader('Content-Type: application/json; charset=UTF-8');
+    $router = new Router\Router($request->getUrl(), $request->getMethod());
+    require_once __DIR__ . '/Router/Router.php';
     $router->run();
-    $response->send();
-    exit();
+    $response->render();
+    exit;
 }
 
-require_once './MVC/Core/App.php';
-require_once './MVC/Core/controller.php';
-require_once './MVC/Core/connectDB.php';
-require_once './Public/Classes/PHPExcel.php';
-require_once './Public/Classes/PHPExcel/IOFactory.php';
-
+// === MVC WEB APP MODE (old system) ===
+require_once "bridge.php";
 $app = new App();

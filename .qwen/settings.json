@@ -1,7 +1,17 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir *)"
+      "Bash(dir *)",
+      "Bash(echo *)",
+      "Bash(xcopy *)",
+      "Bash(s)",
+      "Bash(copied)",
+      "Bash(findstr *)",
+      "Bash(copy *)",
+      "Bash(mkdir *)",
+      "Bash(del *)",
+      "Bash(curl *)"
     ]
-  }
+  },
+  "$version": 3
 }
